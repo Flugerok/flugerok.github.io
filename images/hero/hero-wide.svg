@@ -1,0 +1,120 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Загородный дом на закате с деревянным флюгером-петухом на крыше">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4A3F63"/>
+      <stop offset="0.35" stop-color="#8C6A63"/>
+      <stop offset="0.62" stop-color="#E3A567"/>
+      <stop offset="1" stop-color="#F4CE8E"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FBE3B0" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#FBE3B0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hillsFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6E5A55"/>
+      <stop offset="1" stop-color="#4F3F3C"/>
+    </linearGradient>
+    <linearGradient id="hillsNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3F5138"/>
+      <stop offset="1" stop-color="#2C3A28"/>
+    </linearGradient>
+    <linearGradient id="houseFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2E2119"/>
+      <stop offset="1" stop-color="#1E1611"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <circle cx="1360" cy="330" r="230" fill="url(#sun)"/>
+  <circle cx="1360" cy="330" r="86" fill="#FCEBC2" opacity="0.9"/>
+
+  <!-- birds -->
+  <g stroke="#3B2E28" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.55">
+    <path d="M180 190 q14 -16 28 0 q14 -16 28 0"/>
+    <path d="M240 230 q12 -14 24 0 q12 -14 24 0"/>
+    <path d="M120 250 q10 -12 20 0 q10 -12 20 0"/>
+  </g>
+
+  <!-- far hills -->
+  <path d="M0 620 Q 260 520 520 610 T 1020 600 T 1520 615 T 1920 590 L1920 1080 L0 1080 Z" fill="url(#hillsFar)" opacity="0.85"/>
+
+  <!-- near hills / garden -->
+  <path d="M0 760 Q 300 680 640 750 T 1300 730 T 1920 760 L1920 1080 L0 1080 Z" fill="url(#hillsNear)"/>
+
+  <!-- distant trees -->
+  <g fill="#28331F" opacity="0.9">
+    <ellipse cx="120" cy="700" rx="60" ry="80"/>
+    <ellipse cx="1810" cy="690" rx="70" ry="95"/>
+    <ellipse cx="1720" cy="720" rx="46" ry="64"/>
+  </g>
+
+  <!-- cottage -->
+  <g>
+    <!-- glow behind house -->
+    <ellipse cx="980" cy="760" rx="340" ry="160" fill="#F4CE8E" opacity="0.18"/>
+
+    <!-- house body -->
+    <rect x="800" y="700" width="360" height="230" fill="url(#houseFace)"/>
+    <!-- roof -->
+    <polygon points="770,710 980,560 1190,710" fill="#171009"/>
+    <!-- ridge highlight -->
+    <line x1="980" y1="560" x2="980" y2="710" stroke="#3A2A1C" stroke-width="3" opacity="0.6"/>
+
+    <!-- windows, warm glow -->
+    <rect x="845" y="760" width="70" height="90" rx="4" fill="#F7C978"/>
+    <rect x="1045" y="760" width="70" height="90" rx="4" fill="#F7C978"/>
+    <line x1="880" y1="760" x2="880" y2="850" stroke="#1E1611" stroke-width="3"/>
+    <line x1="845" y1="805" x2="915" y2="805" stroke="#1E1611" stroke-width="3"/>
+    <line x1="1080" y1="760" x2="1080" y2="850" stroke="#1E1611" stroke-width="3"/>
+    <line x1="1045" y1="805" x2="1115" y2="805" stroke="#1E1611" stroke-width="3"/>
+
+    <!-- door -->
+    <rect x="955" y="820" width="60" height="110" rx="3" fill="#120C08"/>
+
+    <!-- porch light -->
+    <circle cx="955" cy="812" r="5" fill="#FBE3B0"/>
+
+    <!-- weathervane mast -->
+    <line x1="980" y1="560" x2="980" y2="420" stroke="#171009" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="980" cy="420" r="6" fill="#171009"/>
+
+    <!-- direction cross -->
+    <line x1="935" y1="452" x2="1025" y2="452" stroke="#3A2A1C" stroke-width="2.5"/>
+    <line x1="980" y1="410" x2="980" y2="494" stroke="#3A2A1C" stroke-width="2.5"/>
+
+    <!-- rooster silhouette (the weathervane figure) -->
+    <g transform="translate(980 452) rotate(-14)">
+      <path d="M-150 -26 C -118 -52, -58 -48, -18 -22 C 6 -38, 32 -32, 44 -12
+               C 54 -28, 74 -30, 84 -12 C 70 2, 70 16, 84 20
+               C 68 30, 46 24, 34 6 C 16 22, -6 26, -24 14
+               C -66 34, -122 24, -150 -8 Z"
+        fill="#171009" stroke="#050301" stroke-width="1"/>
+      <circle cx="72" cy="-10" r="5" fill="#050301"/>
+    </g>
+  </g>
+
+  <!-- small vertushka near the fence, in the garden -->
+  <g transform="translate(430 830)">
+    <line x1="0" y1="0" x2="0" y2="-120" stroke="#171009" stroke-width="5" stroke-linecap="round"/>
+    <g transform="translate(0 -120)">
+      <line x1="-46" y1="0" x2="46" y2="0" stroke="#171009" stroke-width="5" stroke-linecap="round"/>
+      <path d="M46 0 L26 -14 L26 14 Z" fill="#171009"/>
+      <path d="M-46 0 L-26 -12 L-26 12 Z" fill="#171009"/>
+    </g>
+  </g>
+
+  <!-- fence -->
+  <g stroke="#171009" stroke-width="5" opacity="0.85">
+    <line x1="60" y1="960" x2="60" y2="900"/>
+    <line x1="120" y1="960" x2="120" y2="895"/>
+    <line x1="180" y1="960" x2="180" y2="900"/>
+    <line x1="55" y1="915" x2="185" y2="908"/>
+    <line x1="55" y1="945" x2="185" y2="940"/>
+  </g>
+
+  <!-- foreground grasses -->
+  <path d="M0 980 Q 480 930 960 970 T 1920 950 L1920 1080 L0 1080 Z" fill="#20291B"/>
+
+  <!-- left-side darkening for text legibility (kept subtle, CSS overlay handles most) -->
+  <rect x="0" y="0" width="760" height="1080" fill="#1E1611" opacity="0.08"/>
+</svg>

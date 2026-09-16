@@ -1,0 +1,25 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Флюгер-вертушка Классическая стрела">
+  <defs>
+    <radialGradient id="bgA" cx="50%" cy="42%" r="65%">
+      <stop offset="0" stop-color="#FDF6EC"/>
+      <stop offset="1" stop-color="#F0E0BE"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bgA)"/>
+  <g opacity="0.35" stroke="#C99A6A" stroke-width="2" fill="none">
+    <circle cx="400" cy="380" r="220"/>
+    <circle cx="400" cy="380" r="170"/>
+  </g>
+  <line x1="400" y1="640" x2="400" y2="260" stroke="#5B4230" stroke-width="10" stroke-linecap="round"/>
+  <line x1="240" y1="380" x2="560" y2="380" stroke="#8C5A34" stroke-width="8" stroke-linecap="round"/>
+  <path d="M560 380 L520 350 L520 410 Z" fill="#8C5A34" stroke="#3E2A1D" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M240 380 L280 355 L280 405 Z" fill="#7A4E2C" stroke="#3E2A1D" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="400" cy="380" r="10" fill="#3E2A1D"/>
+  <g fill="#7A4E2C" font-family="Georgia, serif" font-size="20">
+    <text x="392" y="265">С</text>
+    <text x="392" y="512">Ю</text>
+    <text x="270" y="388">З</text>
+    <text x="518" y="388">В</text>
+  </g>
+  <text x="400" y="720" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#7A4E2C">Вертушка «Стрела» — фото 4, скоро заменим на реальное</text>
+</svg>

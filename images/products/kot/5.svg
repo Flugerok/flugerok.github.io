@@ -1,0 +1,26 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Флюгер Кот">
+  <defs>
+    <radialGradient id="bgK" cx="50%" cy="42%" r="65%">
+      <stop offset="0" stop-color="#F5EEE0"/>
+      <stop offset="1" stop-color="#E6D6B0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bgK)"/>
+  <g opacity="0.35" stroke="#C99A6A" stroke-width="2" fill="none">
+    <circle cx="400" cy="380" r="220"/>
+    <circle cx="400" cy="380" r="170"/>
+  </g>
+  <line x1="400" y1="640" x2="400" y2="260" stroke="#5B4230" stroke-width="10" stroke-linecap="round"/>
+  <line x1="270" y1="400" x2="530" y2="400" stroke="#C99A6A" stroke-width="3"/>
+  <line x1="400" y1="270" x2="400" y2="530" stroke="#C99A6A" stroke-width="3"/>
+  <g transform="translate(400 330) scale(-1,1)">
+    <ellipse cx="0" cy="60" rx="70" ry="60" fill="#8C5A34" stroke="#3E2A1D" stroke-width="5"/>
+    <circle cx="-40" cy="-20" r="46" fill="#8C5A34" stroke="#3E2A1D" stroke-width="5"/>
+    <path d="M-70 -46 L-58 -8 L-40 -34 Z" fill="#7A4E2C" stroke="#3E2A1D" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-16 -50 L-4 -12 L-28 -36 Z" fill="#7A4E2C" stroke="#3E2A1D" stroke-width="4" stroke-linejoin="round"/>
+    <circle cx="-50" cy="-24" r="4" fill="#3E2A1D"/>
+    <path d="M60 90 C 110 90, 130 50, 108 20 C 96 4, 78 8, 78 26 C 78 40, 92 40, 96 30"
+      fill="none" stroke="#3E2A1D" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <text x="400" y="720" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#7A4E2C">Флюгер «Кот» — фото 5, скоро заменим на реальное</text>
+</svg>

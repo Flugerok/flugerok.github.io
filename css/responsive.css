@@ -1,0 +1,101 @@
+/* ==========================================================================
+   responsive.css — адаптивность для планшета и телефона
+   Правила переопределяют style.css на меньших экранах.
+   ========================================================================== */
+
+/* ---------- Планшет: до 1024px ---------- */
+@media (max-width: 1024px) {
+  .hero { min-height: min(78vh, 680px); align-items: flex-end; }
+  .hero__bg { object-position: 68% 50%; }
+  .hero__text { max-width: none; }
+
+  .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+  .advantages { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+
+  .product-layout { grid-template-columns: 1fr; gap: 32px; }
+
+  .info-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Планшет / малый ноутбук: до 900px ---------- */
+@media (max-width: 900px) {
+  .nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(320px, 82vw);
+    background: var(--paper);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 90px 26px 26px;
+    box-shadow: -12px 0 30px -20px rgba(0,0,0,0.4);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    z-index: 45;
+  }
+  .nav.is-open { transform: translateX(0); }
+  .nav a {
+    width: 100%;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .nav a::after { display: none; }
+
+  .menu-toggle { display: flex; }
+  .header-actions .btn--primary { display: none; }
+}
+
+@media (min-width: 901px) {
+  .menu-toggle { display: none; }
+}
+
+/* ---------- Телефон: до 640px ---------- */
+@media (max-width: 640px) {
+  .container { padding: 0 18px; }
+  .section { padding: 44px 0; }
+
+  .site-header__inner { padding: 12px 18px; }
+  .brand__name { font-size: 1rem; }
+
+  .hero { padding: 0; min-height: min(72vh, 560px); }
+  .hero__inner { padding: 36px 0 40px; }
+  .hero__bg { object-position: 74% 50%; }
+  .hero__actions { flex-direction: column; align-items: stretch; }
+  .hero__actions .btn { width: 100%; }
+
+  .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 18px 14px; }
+  .stats__number { font-size: 1.5rem; }
+
+  .advantages { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .products-grid { grid-template-columns: 1fr; }
+
+  .footer-grid { grid-template-columns: 1fr; gap: 26px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+
+  .catalog-toolbar { flex-direction: column; align-items: stretch; }
+  .sort-select { width: 100%; }
+
+  .gallery-thumb { width: 60px; height: 60px; }
+
+  .order-modal__panel { padding: 24px 18px; }
+
+  .product-card__footer { flex-direction: column; align-items: stretch; }
+  .product-card__actions { width: 100%; }
+  .product-card__actions .btn { flex: 1; }
+
+  .error-page { padding: 60px 0; }
+}
+
+/* Чуть более узкие экраны — небольшие точечные правки */
+@media (max-width: 380px) {
+  h1 { font-size: 1.8rem; }
+  .brand img { width: 34px; height: 34px; }
+}

@@ -1,0 +1,7 @@
+<svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Деревянные флюгеры">
+  <circle cx="22" cy="22" r="21" fill="#F6F1E7" stroke="#C99A6A" stroke-width="1.5"/>
+  <line x1="22" y1="8" x2="22" y2="36" stroke="#3E2A1D" stroke-width="2" stroke-linecap="round"/>
+  <path d="M22 8 L28 16 L22 13.5 L16 16 Z" fill="#8C5A34"/>
+  <path d="M22 33 L26 28 L22 29.6 L18 28 Z" fill="#8C5A34"/>
+  <circle cx="22" cy="22" r="2.6" fill="#55684A"/>
+</svg>

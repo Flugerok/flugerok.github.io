@@ -1,0 +1,23 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Флюгер Корабль">
+  <defs>
+    <radialGradient id="bgC" cx="50%" cy="42%" r="65%">
+      <stop offset="0" stop-color="#FAF3E6"/>
+      <stop offset="1" stop-color="#EAD9B8"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bgC)"/>
+  <g opacity="0.35" stroke="#C99A6A" stroke-width="2" fill="none">
+    <circle cx="400" cy="380" r="220"/>
+    <circle cx="400" cy="380" r="170"/>
+  </g>
+  <line x1="400" y1="640" x2="400" y2="260" stroke="#5B4230" stroke-width="10" stroke-linecap="round"/>
+  <line x1="270" y1="400" x2="530" y2="400" stroke="#C99A6A" stroke-width="3"/>
+  <line x1="400" y1="270" x2="400" y2="530" stroke="#C99A6A" stroke-width="3"/>
+  <g transform="translate(400 360)">
+    <path d="M-110 60 L110 60 L80 110 L-80 110 Z" fill="#8C5A34" stroke="#3E2A1D" stroke-width="5" stroke-linejoin="round"/>
+    <line x1="-10" y1="60" x2="-10" y2="-90" stroke="#3E2A1D" stroke-width="6"/>
+    <path d="M-6 -84 L70 20 L-6 20 Z" fill="#7A4E2C" stroke="#3E2A1D" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-14 -50 L-60 20 L-14 20 Z" fill="#F6F1E7" stroke="#3E2A1D" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+  <text x="400" y="720" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#7A4E2C">Флюгер «Корабль» — фото 2, скоро заменим на реальное</text>
+</svg>

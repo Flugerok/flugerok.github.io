@@ -1,0 +1,24 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Флюгер Петух">
+  <defs>
+    <radialGradient id="bgP" cx="50%" cy="42%" r="65%">
+      <stop offset="0" stop-color="#FAF3E6"/>
+      <stop offset="1" stop-color="#EAD9B8"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bgP)"/>
+  <g opacity="0.35" stroke="#C99A6A" stroke-width="2" fill="none">
+    <circle cx="400" cy="380" r="220"/>
+    <circle cx="400" cy="380" r="170"/>
+  </g>
+  <line x1="400" y1="640" x2="400" y2="260" stroke="#5B4230" stroke-width="10" stroke-linecap="round"/>
+  <line x1="270" y1="400" x2="530" y2="400" stroke="#C99A6A" stroke-width="3"/>
+  <line x1="400" y1="270" x2="400" y2="530" stroke="#C99A6A" stroke-width="3"/>
+  <g transform="translate(400 320) rotate(-2)">
+    <path d="M-180 -30 C -140 -62, -70 -58, -20 -28 C 6 -46, 40 -40, 54 -14 C 66 -32, 90 -34, 100 -14
+             C 84 0, 84 18, 100 22 C 82 34, 56 28, 40 8 C 20 26, -8 30, -30 16
+             C -80 42, -150 30, -180 -10 Z" fill="#8C5A34" stroke="#3E2A1D" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="86" cy="-12" r="7" fill="#3E2A1D"/>
+    <path d="M100 -14 L128 -4 L100 14 Z" fill="#7A4E2C" stroke="#3E2A1D" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+  <text x="400" y="720" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#7A4E2C">Флюгер «Петух» — фото 2, скоро заменим на реальное</text>
+</svg>

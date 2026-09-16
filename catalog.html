@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Каталог деревянных флюгеров — купить с доставкой</title>
+<meta name="description" content="Каталог деревянных флюгеров и вертушек ручной работы: фигурки петуха, лошади, кота, совы, корабля и классические вертушки.">
+<meta property="og:title" content="Каталог деревянных флюгеров">
+<meta property="og:description" content="Все модели флюгеров ручной работы в одном месте.">
+<meta property="og:image" content="images/hero/hero-wide.svg">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/logo/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <img src="images/logo/logo.svg" alt="" width="40" height="40">
+      <span class="brand__name" data-contact="site-name">Деревянные флюгеры</span>
+    </a>
+    <nav class="nav js-nav" aria-label="Основная навигация">
+      <a href="index.html" >Главная</a>
+      <a href="catalog.html" aria-current="page">Каталог</a>
+      <a href="about.html" >О нас</a>
+      <a href="delivery.html" >Доставка</a>
+      <a href="contacts.html" >Контакты</a>
+    </nav>
+    <div class="header-actions">
+      <button type="button" class="btn btn--primary js-order-btn" data-product="">Заказать</button>
+      <button type="button" class="menu-toggle js-menu-toggle" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<main>
+
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="index.html">Главная</a><span aria-hidden="true">→</span><span aria-current="page">Каталог</span>
+  </nav>
+  <div class="section__head">
+    <h1>Каталог флюгеров</h1>
+    <p>Деревянные флюгеры и вертушки ручной работы. Используйте фильтры и сортировку, чтобы быстрее найти подходящую модель.</p>
+  </div>
+
+  <div class="catalog-toolbar">
+    <div class="filter-list" role="group" aria-label="Фильтр товаров">
+      <button type="button" class="filter-btn js-filter-btn is-active" data-filter="all">Все</button>
+      <button type="button" class="filter-btn js-filter-btn" data-filter="flyuger">Флюгеры</button>
+      <button type="button" class="filter-btn js-filter-btn" data-filter="vertushka">Вертушки</button>
+      <button type="button" class="filter-btn js-filter-btn" data-filter="large">Большие</button>
+      <button type="button" class="filter-btn js-filter-btn" data-filter="small">Маленькие</button>
+      <button type="button" class="filter-btn js-filter-btn" data-filter="popular">Популярные</button>
+    </div>
+    <label>
+      <span class="visually-hidden">Сортировка</span>
+      <select class="sort-select js-sort-select" aria-label="Сортировка товаров">
+        <option value="popularity">По популярности</option>
+        <option value="price-asc">По цене: сначала дешевле</option>
+        <option value="price-desc">По цене: сначала дороже</option>
+        <option value="name">По названию</option>
+      </select>
+    </label>
+  </div>
+
+  <p class="catalog-count js-catalog-count"></p>
+
+  <div class="products-grid js-catalog-grid"></div>
+
+  <div class="catalog-empty js-catalog-empty" hidden>
+    По этому фильтру пока нет товаров. Попробуйте выбрать другой вариант.
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="images/logo/logo.svg" alt="" width="36" height="36">
+          <span class="footer-brand__name" data-contact="site-name">Деревянные флюгеры</span>
+        </div>
+        <p>Деревянные флюгеры ручной работы для дома, сада и дачи.</p>
+      </div>
+      <div>
+        <h4>Меню</h4>
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="about.html">О нас</a></li>
+          <li><a href="delivery.html">Доставка</a></li>
+          <li><a href="contacts.html">Контакты</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li><a data-contact="phone-link" href="tel:">Телефон: <span data-contact="phone"></span></a></li>
+          <li><a data-contact="telegram-link" href="#" target="_blank" rel="noopener">Telegram: <span data-contact="telegram-name"></span></a></li>
+          <li><a data-contact="email-link" href="#">Email: <span data-contact="email"></span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span class="js-year">2026</span> <span data-contact="site-name">Деревянные флюгеры</span></span>
+      <span>Ручная работа из дерева</span>
+    </div>
+    <p class="footer-note">Сайт носит информационный характер. Актуальную стоимость и наличие уточняйте перед заказом.</p>
+  </div>
+</footer>
+
+<div class="order-modal js-order-modal">
+  <div class="order-modal__overlay js-order-overlay"></div>
+  <div class="order-modal__panel" role="dialog" aria-modal="true" aria-labelledby="order-modal-title">
+    <button type="button" class="order-modal__close js-order-close" aria-label="Закрыть">×</button>
+    <h3 id="order-modal-title" class="order-modal__title">Оформить заказ</h3>
+    <p class="order-modal__subtitle">Оставьте контакты — мы свяжемся с вами для уточнения деталей.</p>
+
+    <form class="js-order-form" autocomplete="off">
+      <input type="hidden" name="product">
+      <div class="field">
+        <label for="order-name">Имя</label>
+        <input id="order-name" name="name" type="text" required placeholder="Как к вам обращаться">
+      </div>
+      <div class="field">
+        <label for="order-phone">Телефон</label>
+        <input id="order-phone" name="phone" type="tel" required placeholder="+375 (__) ___-__-__">
+      </div>
+      <div class="field">
+        <label for="order-qty">Количество</label>
+        <input id="order-qty" name="quantity" type="number" min="1" value="1">
+      </div>
+      <div class="field">
+        <label for="order-comment">Комментарий</label>
+        <textarea id="order-comment" name="comment" placeholder="Модель, цвет, пожелания по срокам"></textarea>
+      </div>
+      <button type="submit" class="btn btn--primary btn--block">Отправить заказ</button>
+    </form>
+
+    <div class="order-feedback js-order-success" hidden>
+      <div class="order-feedback__icon" aria-hidden="true">✓</div>
+      <h3>Заявка отправлена</h3>
+      <p>Спасибо! Мы свяжемся с вами в ближайшее время.</p>
+    </div>
+
+    <div class="order-feedback js-order-fallback" hidden>
+      <h3>Свяжитесь с нами напрямую</h3>
+      <p>Оформление через сайт временно недоступно — но вы можете написать нам одним из способов ниже.</p>
+    </div>
+
+    <div class="order-alt">
+      <p>Или свяжитесь с нами напрямую:</p>
+      <div class="order-alt__actions">
+        <a class="btn btn--secondary btn--sm" data-contact="telegram-link" href="#" target="_blank" rel="noopener">Написать в Telegram</a>
+        <a class="btn btn--ghost btn--sm" data-contact="phone-link" href="tel:">Позвонить</a>
+        <a class="btn btn--ghost btn--sm" data-contact="email-link" href="#">Написать на Email</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script src="js/catalog.js"></script>
+</body>
+</html>
