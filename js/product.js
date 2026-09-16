@@ -112,10 +112,13 @@ function renderGallery(root, product) {
   const lightboxContent = lightbox ? lightbox.querySelector(".js-lightbox-content") : null;
   const closeBtn = lightbox ? lightbox.querySelector(".js-lightbox-close") : null;
   const overlay = lightbox ? lightbox.querySelector(".js-lightbox-overlay") : null;
+  const lightboxPrev = lightbox ? lightbox.querySelector(".js-lightbox-prev") : null;
+  const lightboxNext = lightbox ? lightbox.querySelector(".js-lightbox-next") : null;
 
   if (!mainWrap) return;
 
   const media = buildMediaList(product);
+  const photoCount = media.filter((m) => m.type === "image").length;
   let current = 0;
 
   function renderMainSlot(item) {
@@ -175,6 +178,17 @@ function renderGallery(root, product) {
   show(0);
 
   // ---- Полноэкранный просмотр (только для фото) ----
+  // Стрелками/свайпом/клавиатурой в полноэкранном режиме листаются только
+  // фотографии — если по пути попадается миниатюра видео, она пропускается.
+  function findAdjacentPhotoIndex(fromIndex, direction) {
+    let idx = fromIndex;
+    for (let i = 0; i < media.length; i++) {
+      idx = (idx + direction + media.length) % media.length;
+      if (media[idx].type !== "video") return idx;
+    }
+    return fromIndex;
+  }
+
   function openLightbox() {
     if (!lightbox || !lightboxContent) return;
     const item = media[current];
@@ -195,6 +209,18 @@ function renderGallery(root, product) {
     const img = lightboxContent.querySelector("img");
     if (img) { img.src = item.src; img.alt = item.alt; }
   }
+  function stepLightbox(direction) {
+    show(findAdjacentPhotoIndex(current, direction));
+    updateLightboxImage();
+  }
+
+  if (photoCount <= 1) {
+    if (lightboxPrev) lightboxPrev.hidden = true;
+    if (lightboxNext) lightboxNext.hidden = true;
+  } else {
+    if (lightboxPrev) lightboxPrev.addEventListener("click", () => stepLightbox(-1));
+    if (lightboxNext) lightboxNext.addEventListener("click", () => stepLightbox(1));
+  }
 
   if (openBtn) openBtn.addEventListener("click", openLightbox);
   if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
@@ -202,12 +228,12 @@ function renderGallery(root, product) {
   document.addEventListener("keydown", (e) => {
     if (!lightbox || !lightbox.classList.contains("is-open")) return;
     if (e.key === "Escape") closeLightbox();
-    if (e.key === "ArrowRight") { show(current + 1); updateLightboxImage(); }
-    if (e.key === "ArrowLeft") { show(current - 1); updateLightboxImage(); }
+    if (e.key === "ArrowRight") stepLightbox(1);
+    if (e.key === "ArrowLeft") stepLightbox(-1);
   });
 
   // ---- Свайп влево/вправо на телефоне ----
-  [mainWrap, lightbox].forEach((el) => {
+  function attachSwipe(el, inLightbox) {
     if (!el) return;
     let touchStartX = null;
     el.addEventListener("touchstart", (e) => {
@@ -217,12 +243,15 @@ function renderGallery(root, product) {
       if (touchStartX === null) return;
       const dx = e.changedTouches[0].clientX - touchStartX;
       if (Math.abs(dx) > 40) {
-        show(current + (dx < 0 ? 1 : -1));
-        updateLightboxImage();
+        const direction = dx < 0 ? 1 : -1;
+        if (inLightbox) stepLightbox(direction);
+        else show(current + direction);
       }
       touchStartX = null;
     }, { passive: true });
-  });
+  }
+  attachSwipe(mainWrap, false);
+  attachSwipe(lightbox, true);
 }
 
 /* ---------- Инфо о товаре ---------- */

@@ -84,6 +84,9 @@
   .sort-select { width: 100%; }
 
   .gallery-thumb { width: 60px; height: 60px; }
+  .lightbox__nav { width: 42px; height: 42px; font-size: 1.2rem; }
+  .lightbox__nav--prev { left: 8px; }
+  .lightbox__nav--next { right: 8px; }
 
   .order-modal__panel { padding: 24px 18px; }
 
