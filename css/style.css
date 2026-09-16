@@ -683,7 +683,6 @@ table { border-collapse: collapse; width: 100%; }
   border: 0;
   background: var(--wood-dark);
 }
-.gallery-main--video .gallery-expand { display: none; }
 .gallery-nav {
   position: absolute;
   top: 50%;
@@ -789,6 +788,15 @@ table { border-collapse: collapse; width: 100%; }
 .lightbox__overlay { position: absolute; inset: 0; background: rgba(20, 14, 10, 0.9); }
 .lightbox__content { position: relative; max-width: 90vw; max-height: 90vh; z-index: 1; }
 .lightbox__content img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: var(--radius-sm); display: block; }
+.lightbox__content iframe {
+  width: min(90vw, 960px);
+  aspect-ratio: 16 / 9;
+  max-height: 90vh;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--wood-dark);
+  display: block;
+}
 .lightbox__close {
   position: absolute;
   top: 20px;

@@ -104,19 +104,19 @@ function createProductCard(product) {
   article.dataset.name = product.name;
 
   article.innerHTML = `
-    <a class="product-card__media" href="product.html?id=${encodeURIComponent(product.id)}">
+    <a class="product-card__media" href="products/${encodeURIComponent(product.id)}.html">
       <img src="${product.images[0]}" alt="${product.name}" width="600" height="600" loading="lazy">
       <span class="product-card__tag">${categoryLabel(product.category)}</span>
     </a>
     <div class="product-card__body">
       <h3 class="product-card__title">
-        <a href="product.html?id=${encodeURIComponent(product.id)}">${product.shortName}</a>
+        <a href="products/${encodeURIComponent(product.id)}.html">${product.shortName}</a>
       </h3>
       <p class="product-card__desc">${product.shortDescription}</p>
       <div class="product-card__footer">
         <span class="product-card__price">${formatPrice(product)}</span>
         <div class="product-card__actions">
-          <a class="btn btn--ghost btn--sm" href="product.html?id=${encodeURIComponent(product.id)}">Подробнее</a>
+          <a class="btn btn--ghost btn--sm" href="products/${encodeURIComponent(product.id)}.html">Подробнее</a>
           <button type="button" class="btn btn--primary btn--sm js-order-btn" data-product="${product.name}">Заказать</button>
         </div>
       </div>

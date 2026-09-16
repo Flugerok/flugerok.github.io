@@ -1,23 +1,49 @@
 /*
   product.js
   ----------
-  Отвечает за страницу отдельного товара product.html?id=...
+  Отвечает за страницу отдельного товара.
 
-  Что делает:
-  - находит товар в products.js по параметру id из адресной строки;
-  - строит галерею с миниатюрами, стрелками и полноэкранным просмотром;
-  - показывает видео с YouTube, если оно указано у товара;
+  Работает в двух режимах — специально, чтобы ничего не ломалось,
+  даже если вы забыли пересобрать статические страницы после
+  добавления нового товара:
+
+  1. products/<id>.html — "чистый" адрес товара (например
+     products/petuh.html). Это основной, рекомендуемый вариант: такие
+     файлы генерируются скриптом build-products.js (см. README, раздел
+     про SEO) и уже содержат готовые <title>/description/Open Graph —
+     то есть корректно выглядят в Google и в превью Telegram/WhatsApp.
+     На такой странице id товара берётся из атрибута data-product-id.
+
+  2. product.html?id=... — старый вариант с одним общим файлом и
+     параметром в адресе. Продолжает работать как раньше и служит
+     подстраховкой: например, если вы добавили новый товар в
+     products.js, но ещё не запускали build-products.js — на такую
+     страницу можно временно дать ссылку через product.html?id=,
+     работать она будет, просто без заранее подготовленных мета-тегов.
+
+  Общая логика:
+  - находит товар в products.js по id;
+  - строит галерею с миниатюрами (фото + видео), стрелками и
+    полноэкранным просмотром;
   - выводит описание, характеристики и хлебные крошки;
-  - добавляет Schema.org разметку товара (Product) для поисковиков;
+  - добавляет/обновляет Schema.org разметку товара (Product);
   - настраивает кнопку "Заказать" с указанием названия товара.
 */
+
+// Префикс пути к общим файлам (css/js/images) и другим страницам сайта.
+// Пустая строка для product.html в корне, "../" — для products/<id>.html.
+let BASE_PATH = "";
+function withBase(relativePath) {
+  return BASE_PATH + relativePath;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const root = document.querySelector(".js-product-page");
   if (!root || typeof PRODUCTS === "undefined") return;
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+  BASE_PATH = window.location.pathname.includes("/products/") ? "../" : "";
+
+  const id = root.dataset.productId || new URLSearchParams(window.location.search).get("id");
   const product = PRODUCTS.find((p) => p.id === id);
 
   if (!product) {
@@ -29,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setMeta("description", product.shortDescription);
   setMeta("og:title", product.name, true);
   setMeta("og:description", product.shortDescription, true);
-  setMeta("og:image", absoluteUrl(product.images[0]), true);
+  setMeta("og:image", absoluteUrl(withBase(product.images[0])), true);
   setMeta("og:type", "product", true);
 
   renderBreadcrumbs(root, product);
@@ -60,7 +86,7 @@ function renderNotFound(root) {
     <div class="product-missing">
       <h1>Товар не найден</h1>
       <p>Возможно, ссылка устарела или товар был снят с продажи.</p>
-      <a class="btn btn--primary" href="catalog.html">Перейти в каталог</a>
+      <a class="btn btn--primary" href="${withBase("catalog.html")}">Перейти в каталог</a>
     </div>
   `;
 }
@@ -69,9 +95,9 @@ function renderBreadcrumbs(root, product) {
   const el = root.querySelector(".js-breadcrumbs");
   if (!el) return;
   el.innerHTML = `
-    <a href="index.html">Главная</a>
+    <a href="${withBase("index.html")}">Главная</a>
     <span aria-hidden="true">→</span>
-    <a href="catalog.html">Каталог</a>
+    <a href="${withBase("catalog.html")}">Каталог</a>
     <span aria-hidden="true">→</span>
     <span aria-current="page">${product.shortName}</span>
   `;
@@ -88,7 +114,7 @@ function renderBreadcrumbs(root, product) {
 function buildMediaList(product) {
   const media = (product.images || []).map((src, i) => ({
     type: "image",
-    src,
+    src: withBase(src),
     alt: `${product.name}, фото ${i + 1}`,
   }));
   if (product.youtube) {
@@ -118,7 +144,6 @@ function renderGallery(root, product) {
   if (!mainWrap) return;
 
   const media = buildMediaList(product);
-  const photoCount = media.filter((m) => m.type === "image").length;
   let current = 0;
 
   function renderMainSlot(item) {
@@ -144,8 +169,6 @@ function renderGallery(root, product) {
     slot.innerHTML = renderMainSlot(item);
     mainWrap.prepend(slot);
     mainWrap.classList.toggle("gallery-main--video", item.type === "video");
-
-    if (openBtn) openBtn.hidden = item.type === "video";
 
     thumbsWrap.querySelectorAll(".gallery-thumb").forEach((thumb, i) => {
       thumb.classList.toggle("is-active", i === current);
@@ -177,23 +200,21 @@ function renderGallery(root, product) {
 
   show(0);
 
-  // ---- Полноэкранный просмотр (только для фото) ----
-  // Стрелками/свайпом/клавиатурой в полноэкранном режиме листаются только
-  // фотографии — если по пути попадается миниатюра видео, она пропускается.
-  function findAdjacentPhotoIndex(fromIndex, direction) {
-    let idx = fromIndex;
-    for (let i = 0; i < media.length; i++) {
-      idx = (idx + direction + media.length) % media.length;
-      if (media[idx].type !== "video") return idx;
+  // ---- Полноэкранный просмотр (фото и видео — общая лента, как в миниатюрах) ----
+  function renderLightboxSlot(item) {
+    if (item.type === "video") {
+      return `<iframe
+        src="https://www.youtube-nocookie.com/embed/${item.youtubeId}"
+        title="${item.alt}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>`;
     }
-    return fromIndex;
+    return `<img src="${item.src}" alt="${item.alt}">`;
   }
 
   function openLightbox() {
     if (!lightbox || !lightboxContent) return;
-    const item = media[current];
-    if (item.type === "video") return; // у видео есть свой fullscreen у плеера
-    lightboxContent.innerHTML = `<img src="${item.src}" alt="${item.alt}">`;
+    lightboxContent.innerHTML = renderLightboxSlot(media[current]);
     lightbox.classList.add("is-open");
     document.body.classList.add("no-scroll");
   }
@@ -201,20 +222,18 @@ function renderGallery(root, product) {
     if (!lightbox) return;
     lightbox.classList.remove("is-open");
     document.body.classList.remove("no-scroll");
+    if (lightboxContent) lightboxContent.innerHTML = ""; // останавливает видео при закрытии
   }
-  function updateLightboxImage() {
+  function updateLightboxContent() {
     if (!lightbox || !lightbox.classList.contains("is-open") || !lightboxContent) return;
-    const item = media[current];
-    if (item.type === "video") { closeLightbox(); return; }
-    const img = lightboxContent.querySelector("img");
-    if (img) { img.src = item.src; img.alt = item.alt; }
+    lightboxContent.innerHTML = renderLightboxSlot(media[current]);
   }
   function stepLightbox(direction) {
-    show(findAdjacentPhotoIndex(current, direction));
-    updateLightboxImage();
+    show(current + direction);
+    updateLightboxContent();
   }
 
-  if (photoCount <= 1) {
+  if (media.length <= 1) {
     if (lightboxPrev) lightboxPrev.hidden = true;
     if (lightboxNext) lightboxNext.hidden = true;
   } else {
@@ -278,16 +297,19 @@ function renderCharacteristics(root, product) {
   });
 }
 
-/* ---------- Schema.org ---------- */
+/* ---------- Schema.org ----------
+   Если страница уже сгенерирована build-products.js, в <head> есть
+   тег <script id="js-product-schema">, подготовленный заранее —
+   обновляем его на месте вместо того, чтобы добавлять второй,
+   дублирующий. Если тега нет (например, на старом product.html?id=)
+   — создаём его сами, как и раньше. */
 function renderSchema(product) {
-  const script = document.createElement("script");
-  script.type = "application/ld+json";
-  script.textContent = JSON.stringify({
+  const data = {
     "@context": "https://schema.org/",
     "@type": "Product",
     name: product.name,
     description: product.description,
-    image: product.images.map(absoluteUrl),
+    image: product.images.map((src) => absoluteUrl(withBase(src))),
     offers: {
       "@type": "Offer",
       priceCurrency: "BYN",
@@ -295,8 +317,15 @@ function renderSchema(product) {
       availability: "https://schema.org/InStock",
       url: window.location.href,
     },
-  });
-  document.head.appendChild(script);
+  };
+  let script = document.getElementById("js-product-schema");
+  if (!script) {
+    script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "js-product-schema";
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(data);
 }
 
 /* ---------- Кнопки заказа на странице товара ---------- */

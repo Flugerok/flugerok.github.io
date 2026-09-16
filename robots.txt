@@ -1,0 +1,9 @@
+# robots.txt
+# Разрешаем индексацию всего сайта и указываем путь к карте сайта.
+# Замените YOUR-DOMAIN-HERE на настоящий адрес после публикации
+# (см. также sitemap.xml).
+
+User-agent: *
+Allow: /
+
+Sitemap: https://YOUR-DOMAIN-HERE/sitemap.xml
