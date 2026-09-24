@@ -252,7 +252,7 @@ const PRODUCTS = [
   {
     id: "phela",
     name: "Вертушка-флюгер «Классическая Пчела",
-    shortName: "Вертушка «Стрела»",
+    shortName: "Вертушка «Пчела»",
     price: 38,
     priceNote: "от",
     category: "vertushka",
