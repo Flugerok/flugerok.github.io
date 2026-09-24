@@ -264,11 +264,11 @@ const PRODUCTS = [
       "Классическая вертушка-указатель направления ветра со сторонами света. Минималистичный дизайн " +
       "хорошо подходит для современных домов и небольших дачных построек.",
     images: [
-      "images/products/strela/1.svg",
-      "images/products/strela/2.svg",
-      "images/products/strela/3.svg",
-      "images/products/strela/4.svg",
-      "images/products/strela/5.svg",
+      "images/products/phela/1.svg",
+      "images/products/phela/2.svg",
+      "images/products/phela/3.svg",
+      "images/products/phela/4.svg",
+      "images/products/phela/5.svg",
     ],
     youtube: "",
     characteristics: {
