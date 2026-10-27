@@ -2,7 +2,7 @@
 <!--
   sitemap.xml
   -----------
-  Список всех страниц сайта для поисковиков. Замените YOUR-DOMAIN-HERE
+  Список всех страниц сайта для поисковиков. Замените flugerok.github.io
   на настоящий адрес сайта после публикации на GitHub Pages, например:
   https://ваш-логин.github.io/название-репозитория
 
@@ -11,17 +11,16 @@
   строки <url> по образцу ниже (или просто попросите обновить список).
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://YOUR-DOMAIN-HERE/index.html</loc><priority>1.0</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/catalog.html</loc><priority>0.9</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/about.html</loc><priority>0.5</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/delivery.html</loc><priority>0.5</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/contacts.html</loc><priority>0.5</priority></url>
+  <url><loc>https://flugerok.github.io/index.html</loc><priority>1.0</priority></url>
+  <url><loc>https://flugerok.github.io/catalog.html</loc><priority>0.9</priority></url>
+  <url><loc>https://flugerok.github.io/about.html</loc><priority>0.5</priority></url>
+  <url><loc>https://flugerok.github.io/delivery.html</loc><priority>0.5</priority></url>
+  <url><loc>https://flugerok.github.io/contacts.html</loc><priority>0.5</priority></url>
 
-  <url><loc>https://YOUR-DOMAIN-HERE/products/petuh.html</loc><priority>0.8</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/products/loshad.html</loc><priority>0.8</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/products/kot.html</loc><priority>0.8</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/products/sova.html</loc><priority>0.8</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/products/korabl.html</loc><priority>0.8</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/products/strela.html</loc><priority>0.8</priority></url>
-  <url><loc>https://YOUR-DOMAIN-HERE/sn/SNG01A0926.html</loc><priority>0.8</priority></url>
+  <url><loc>https://flugerok.github.io/products/petuh.html</loc><priority>0.8</priority></url>
+  <url><loc>https://flugerok.github.io/products/loshad.html</loc><priority>0.8</priority></url>
+  <url><loc>https://flugerok.github.io/products/kot.html</loc><priority>0.8</priority></url>
+  <url><loc>https://flugerok.github.io/products/sova.html</loc><priority>0.8</priority></url>
+  <url><loc>https://flugerok.github.io/products/korabl.html</loc><priority>0.8</priority></url>
+  <url><loc>https://flugerok.github.io/products/strela.html</loc><priority>0.8</priority></url>
 </urlset>

@@ -14,6 +14,7 @@
   .advantages { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: repeat(2, 1fr); }
   .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .news-grid { grid-template-columns: repeat(2, 1fr); }
 
   .footer-grid { grid-template-columns: 1fr 1fr; }
 
@@ -62,13 +63,15 @@
   .section { padding: 44px 0; }
 
   .site-header__inner { padding: 12px 18px; }
-  .brand__name { font-size: 1rem; }
+  .brand img { height: 38px; }
 
   .hero { padding: 0; min-height: min(72vh, 560px); }
   .hero__inner { padding: 36px 0 40px; }
   .hero__bg { object-position: 74% 50%; }
   .hero__actions { flex-direction: column; align-items: stretch; }
   .hero__actions .btn { width: 100%; }
+  .weather-chip { font-size: 0.78rem; padding: 6px 6px 6px 10px; }
+  .weather-chip__text { white-space: normal; }
 
   .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 18px 14px; }
   .stats__number { font-size: 1.5rem; }
@@ -76,6 +79,7 @@
   .advantages { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
   .products-grid { grid-template-columns: 1fr; }
+  .news-grid { grid-template-columns: 1fr; }
 
   .footer-grid { grid-template-columns: 1fr; gap: 26px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }

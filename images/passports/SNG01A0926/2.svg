@@ -1,0 +1,29 @@
+<svg width="900" height="700" viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Флюгер на момент изготовления, фото 2 (готовое изделие)">
+  <defs>
+    <radialGradient id="bgPp2" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#FAF3E6"/>
+      <stop offset="1" stop-color="#E3D3AE"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="700" fill="url(#bgPp2)"/>
+  <rect x="40" y="40" width="820" height="620" fill="none" stroke="#C99A6A" stroke-width="2" stroke-dasharray="6 8" opacity="0.6"/>
+
+  <g opacity="0.35" stroke="#C99A6A" stroke-width="2" fill="none">
+    <circle cx="450" cy="360" r="210"/>
+  </g>
+
+  <line x1="450" y1="600" x2="450" y2="240" stroke="#3E2A1D" stroke-width="9" stroke-linecap="round"/>
+  <line x1="330" y1="360" x2="570" y2="360" stroke="#C99A6A" stroke-width="3"/>
+  <line x1="450" y1="240" x2="450" y2="480" stroke="#C99A6A" stroke-width="3"/>
+
+  <g transform="translate(450 290) rotate(-12)">
+    <path d="M-150 -26 C -116 -54, -58 -50, -16 -24 C 6 -40, 34 -34, 46 -12
+             C 58 -28, 78 -30, 88 -12 C 74 2, 74 16, 88 20
+             C 70 32, 46 26, 34 6 C 16 24, -6 28, -26 14
+             C -68 34, -128 24, -150 -8 Z" fill="#8C5A34" stroke="#3E2A1D" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="76" cy="-10" r="6" fill="#3E2A1D"/>
+  </g>
+
+  <rect x="40" y="600" width="260" height="46" rx="6" fill="rgba(59,42,29,0.85)"/>
+  <text x="60" y="629" font-family="Georgia, serif" font-size="18" fill="#FBF8F2">Готовое изделие</text>
+</svg>

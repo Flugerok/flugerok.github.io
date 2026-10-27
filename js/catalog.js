@@ -3,9 +3,13 @@
   ----------
   Отвечает только за страницу catalog.html:
   - отрисовывает все товары из products.js;
-  - фильтрует их по кнопкам (Все / Флюгеры / Вертушки / Большие / Маленькие / Популярные);
-  - сортирует по выбору в выпадающем списке;
+  - фильтр: "Все" / "Популярные" (по полю popular в products.js);
+  - сортировка: по дате добавления (новые/старые сначала) и по цене;
   - всё происходит без перезагрузки страницы.
+
+  Дата добавления берётся из поля added у каждого товара в
+  js/products.js (формат ГГГГ-ММ-ДД). Если у товара поля нет — он
+  считается самым старым при сортировке по дате.
 */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -18,40 +22,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const countEl = document.querySelector(".js-catalog-count");
 
   let currentFilter = "all";
-  let currentSort = "popularity";
+  let currentSort = sortSelect ? sortSelect.value : "date-desc";
 
   function matchesFilter(product, filter) {
-    switch (filter) {
-      case "flyuger":
-        return product.category === "flyuger";
-      case "vertushka":
-        return product.category === "vertushka";
-      case "large":
-        return product.size === "large";
-      case "small":
-        return product.size === "small";
-      case "popular":
-        return product.popular === true;
-      default:
-        return true;
-    }
+    if (filter === "popular") return product.popular === true;
+    return true;
+  }
+
+  function addedTime(product) {
+    const t = Date.parse(product.added);
+    return isNaN(t) ? 0 : t;
   }
 
   function sortProducts(list, sort) {
     const sorted = list.slice();
     switch (sort) {
+      case "date-asc":
+        sorted.sort((a, b) => addedTime(a) - addedTime(b));
+        break;
       case "price-asc":
         sorted.sort((a, b) => a.price - b.price);
         break;
       case "price-desc":
         sorted.sort((a, b) => b.price - a.price);
         break;
-      case "name":
-        sorted.sort((a, b) => a.name.localeCompare(b.name, "ru"));
-        break;
-      case "popularity":
+      case "date-desc":
       default:
-        sorted.sort((a, b) => b.popularity - a.popularity);
+        sorted.sort((a, b) => addedTime(b) - addedTime(a));
         break;
     }
     return sorted;

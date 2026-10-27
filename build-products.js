@@ -75,6 +75,17 @@ function formatPrice(p) {
   const note = p.priceNote ? p.priceNote + " " : "";
   return `${note}${p.price} BYN`;
 }
+const RU_MONTHS = [
+  "января", "февраля", "марта", "апреля", "мая", "июня",
+  "июля", "августа", "сентября", "октября", "ноября", "декабря",
+];
+// "2026-09-01" -> "1 сентября 2026"; нет даты или неверный формат -> ""
+function formatRuDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || "").trim());
+  if (!m) return "";
+  const month = RU_MONTHS[parseInt(m[2], 10) - 1];
+  return month ? `${parseInt(m[3], 10)} ${month} ${m[1]}` : "";
+}
 function categoryLabel(c) {
   return c === "vertushka" ? "Вертушка" : "Флюгер";
 }
@@ -112,7 +123,7 @@ function buildProductPage(product) {
 <meta property="og:description" content="${escAttr(description)}">
 <meta property="og:image" content="${esc(ogImage)}">
 <meta property="og:type" content="product">
-<link rel="icon" href="../images/logo/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../images/logo/logo.webp" type="image/webp">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/responsive.css">
 <script type="application/ld+json" id="js-product-schema">${JSON.stringify(schema)}</script>
@@ -122,8 +133,7 @@ function buildProductPage(product) {
 <header class="site-header">
   <div class="site-header__inner">
     <a class="brand" href="../index.html">
-      <img src="../images/logo/logo.svg" alt="" width="40" height="40">
-      <span class="brand__name" data-contact="site-name">Деревянные флюгеры</span>
+      <img src="../images/logo/logo.webp" alt="Flugerok" width="229" height="52" class="brand__logo">
     </a>
     <nav class="nav js-nav" aria-label="Основная навигация">
       <a href="../index.html">Главная</a>
@@ -166,7 +176,7 @@ function buildProductPage(product) {
       <span class="product-info__tag js-product-tag">${esc(categoryLabel(product.category))}</span>
       <h1 class="js-product-title">${esc(product.name)}</h1>
       <span class="product-info__price js-product-price">${esc(formatPrice(product))}</span>
-      <p class="js-product-description">${esc(product.description)}</p>
+${formatRuDate(product.added) ? `      <p class="product-info__added">Добавлен в каталог: <span class="js-product-added">${esc(formatRuDate(product.added))}</span></p>\n` : ""}      <p class="js-product-description">${esc(product.description)}</p>
 
       <div class="product-info__actions">
         <button type="button" class="btn btn--primary js-order-btn" data-product="${escAttr(product.name)}">Заказать</button>
@@ -203,8 +213,7 @@ ${Object.entries(product.characteristics || {}).map(([k, v]) => `          <tr><
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <img src="../images/logo/logo.svg" alt="" width="36" height="36">
-          <span class="footer-brand__name" data-contact="site-name">Деревянные флюгеры</span>
+          <img src="../images/logo/logo.webp" alt="Flugerok" width="167" height="38" class="footer-brand__logo">
         </div>
         <p>Деревянные флюгеры ручной работы для дома, сада и дачи.</p>
       </div>
@@ -299,6 +308,9 @@ if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR);
 
 let count = 0;
 for (const product of PRODUCTS) {
+  if (!product.added) {
+    console.warn(`⚠ У товара "${product.id}" не указано поле added (дата добавления) в js/products.js.`);
+  }
   const html = buildProductPage(product);
   const outPath = path.join(OUT_DIR, `${product.id}.html`);
   fs.writeFileSync(outPath, html, "utf8");

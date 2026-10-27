@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFaqAccordion();
   setFooterYear();
   renderPopularProducts();
+  setModelsCount();
 });
 
 /* ---------- Мобильное меню ---------- */
@@ -126,6 +127,14 @@ function createProductCard(product) {
 }
 
 // На главной странице показываем популярные товары (если есть контейнер)
+// Блок с цифрами на главной: "N моделей в каталоге" считается само
+function setModelsCount() {
+  if (typeof PRODUCTS === "undefined") return;
+  document.querySelectorAll(".js-models-count").forEach((el) => {
+    el.textContent = PRODUCTS.length;
+  });
+}
+
 function renderPopularProducts() {
   const container = document.querySelector(".js-popular-products");
   if (!container || typeof PRODUCTS === "undefined") return;

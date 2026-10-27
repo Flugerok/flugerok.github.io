@@ -162,9 +162,23 @@ table { border-collapse: collapse; width: 100%; }
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(246, 241, 231, 0.94);
-  backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--line);
+}
+/* Блюр фона шапки вынесен в псевдоэлемент намеренно: если повесить
+   backdrop-filter прямо на .site-header, любой его потомок с
+   position: fixed (например мобильное меню .nav) начинает
+   позиционироваться относительно самой шапки, а не экрана — на
+   телефоне меню тогда сжимается в узкую полоску и выглядит как баг
+   с прозрачностью. Через ::before эффект тот же, а меню больше не
+   является потомком отфильтрованного элемента. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(246, 241, 231, 0.94);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 .site-header__inner {
   display: flex;
@@ -181,12 +195,10 @@ table { border-collapse: collapse; width: 100%; }
   gap: 12px;
   color: var(--wood-dark);
 }
-.brand img { width: 40px; height: 40px; }
-.brand__name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.15rem;
-  line-height: 1.1;
+.brand img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
 }
 .brand:hover { color: var(--wood-dark); }
 
@@ -322,6 +334,60 @@ table { border-collapse: collapse; width: 100%; }
   max-width: 42ch;
 }
 
+/* ---------- Информер погоды и ветра (в hero) ---------- */
+.weather-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+  padding: 7px 8px 7px 12px;
+  border-radius: 999px;
+  background: rgba(251, 248, 242, 0.12);
+  border: 1px solid rgba(251, 248, 242, 0.3);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: #F2E9D8;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+.weather-chip__icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  opacity: 0.9;
+  transform-origin: 50% 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .weather-chip__icon {
+    /* Длительность оборота задаёт js/weather.js по реальной скорости
+       ветра: слабый ветер — медленное вращение, сильный — быстрое. */
+    animation: weather-chip-spin var(--spin-duration, 4s) linear infinite;
+  }
+}
+@keyframes weather-chip-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.weather-chip__text { white-space: nowrap; }
+.weather-chip__locate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(251, 248, 242, 0.16);
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+.weather-chip__locate:hover { background: rgba(251, 248, 242, 0.3); }
+.weather-chip__locate:disabled { opacity: 0.5; cursor: default; }
+.weather-chip__locate svg { width: 12px; height: 12px; }
+
 /* ---------- Статичный блок с цифрами ---------- */
 .stats {
   background: var(--wood-dark);
@@ -453,6 +519,52 @@ table { border-collapse: collapse; width: 100%; }
 .step-card h3 { margin-bottom: 6px; }
 .step-card p { margin: 0; color: #5B4A3C; font-size: 0.92rem; }
 
+/* ---------- Новости орнитологии ---------- */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.news-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.news-card:hover {
+  border-color: var(--wood-light);
+  box-shadow: 0 10px 24px -18px rgba(62, 42, 29, 0.6);
+  color: inherit;
+}
+.news-card__media {
+  aspect-ratio: 16 / 7;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+/* Пока показываем нарисованную иконку (нет фото / фото не загрузилось) —
+   область с отступами, как раньше. Как только появляется <img> (настоящее
+   фото), отступы и центрирование не нужны — фото заполняет всю область. */
+.news-card__media:has(svg) { padding: 18px; }
+.news-card__media svg { width: 100%; height: 100%; max-width: 160px; opacity: 0.85; }
+.news-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.news-card__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; }
+.news-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--wood-dark);
+  line-height: 1.3;
+}
+.news-card__summary { margin: 0; color: #5B4A3C; font-size: 0.92rem; }
+.news-card__meta { margin: 4px 0 0; color: #8A7A63; font-size: 0.8rem; }
+
 /* ---------- FAQ ---------- */
 .faq-list { display: flex; flex-direction: column; gap: 10px; }
 .faq-item {
@@ -523,11 +635,14 @@ table { border-collapse: collapse; width: 100%; }
   padding-bottom: 32px;
   border-bottom: 1px solid rgba(239, 227, 204, 0.18);
 }
-.footer-brand { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
-.footer-brand__name {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  color: var(--white);
+.footer-brand { display: flex; align-items: center; margin-bottom: 12px; }
+.footer-brand img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  background: var(--paper);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
 }
 .site-footer p { color: #D8C6A8; }
 .site-footer h4 { color: var(--white); font-family: var(--font-body); font-size: 0.95rem; margin-bottom: 14px; }
@@ -756,6 +871,12 @@ table { border-collapse: collapse; width: 100%; }
   margin-bottom: 16px;
   display: block;
 }
+.product-info__added {
+  margin: -8px 0 16px;
+  color: #8A7A63;
+  font-size: 0.88rem;
+}
+.gallery-main__slot img { cursor: zoom-in; }
 .product-info__actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
 
 .characteristics-table th,
@@ -877,6 +998,58 @@ table { border-collapse: collapse; width: 100%; }
   border: 1px dashed var(--line);
   border-radius: var(--radius-lg);
 }
+
+/* ---------- Страница-паспорт изделия (passport/NUMBER.html) ---------- */
+.passport-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 0 72px;
+}
+.passport-eyebrow {
+  color: var(--moss-dark);
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+.passport-number {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--wood-dark);
+  letter-spacing: 0.02em;
+  margin: 0 0 6px;
+  word-break: break-all;
+}
+.passport-date {
+  color: #5B4A3C;
+  font-size: 1.05rem;
+  margin-bottom: 28px;
+}
+.passport-date .js-days-ago {
+  color: #8A7A63;
+  font-size: 0.92rem;
+}
+.passport-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.passport-photo {
+  display: block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  aspect-ratio: 4 / 3;
+}
+.passport-photo img { width: 100%; height: 100%; object-fit: cover; }
+.passport-cta {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 26px 24px;
+  text-align: center;
+}
+.passport-cta p { margin: 0 0 16px; color: #5B4A3C; }
 
 /* ---------- Страницы о нас / доставка ---------- */
 .prose { max-width: 74ch; }

@@ -242,6 +242,13 @@ function renderGallery(root, product) {
   }
 
   if (openBtn) openBtn.addEventListener("click", openLightbox);
+
+  // Клик по самому фото тоже открывает полноэкранный просмотр
+  // (не мешает стрелкам и кнопке "Во весь экран" — их клики пропускаем).
+  mainWrap.addEventListener("click", (e) => {
+    if (e.target.closest(".gallery-nav, .gallery-expand")) return;
+    if (e.target.closest(".gallery-main__slot img")) openLightbox();
+  });
   if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
   if (overlay) overlay.addEventListener("click", closeLightbox);
   document.addEventListener("keydown", (e) => {
@@ -284,6 +291,28 @@ function renderInfo(root, product) {
   if (priceEl) priceEl.textContent = formatPrice(product);
   if (descEl) descEl.textContent = product.description;
   if (tagEl) tagEl.textContent = categoryLabel(product.category);
+
+  // Дата добавления товара в каталог (поле added в products.js)
+  const addedEl = root.querySelector(".js-product-added");
+  if (addedEl) {
+    const text = formatRuDate(product.added);
+    if (text) addedEl.textContent = text;
+    else if (addedEl.parentElement) addedEl.parentElement.hidden = true;
+  }
+}
+
+const RU_MONTHS = [
+  "января", "февраля", "марта", "апреля", "мая", "июня",
+  "июля", "августа", "сентября", "октября", "ноября", "декабря",
+];
+
+// "2026-09-01" -> "1 сентября 2026"; если даты нет или она неверная — пустая строка
+function formatRuDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || "").trim());
+  if (!m) return "";
+  const month = RU_MONTHS[parseInt(m[2], 10) - 1];
+  if (!month) return "";
+  return `${parseInt(m[3], 10)} ${month} ${m[1]}`;
 }
 
 function renderCharacteristics(root, product) {

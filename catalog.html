@@ -9,7 +9,7 @@
 <meta property="og:description" content="Все модели флюгеров ручной работы в одном месте.">
 <meta property="og:image" content="images/hero/hero-wide.svg">
 <meta property="og:type" content="website">
-<link rel="icon" href="images/logo/logo.svg" type="image/svg+xml">
+<link rel="icon" href="images/logo/logo.webp" type="image/webp">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -18,8 +18,7 @@
 <header class="site-header">
   <div class="site-header__inner">
     <a class="brand" href="index.html">
-      <img src="images/logo/logo.svg" alt="" width="40" height="40">
-      <span class="brand__name" data-contact="site-name">Деревянные флюгеры</span>
+      <img src="images/logo/logo.webp" alt="Flugerok" width="229" height="52" class="brand__logo">
     </a>
     <nav class="nav js-nav" aria-label="Основная навигация">
       <a href="index.html" >Главная</a>
@@ -52,19 +51,15 @@
   <div class="catalog-toolbar">
     <div class="filter-list" role="group" aria-label="Фильтр товаров">
       <button type="button" class="filter-btn js-filter-btn is-active" data-filter="all">Все</button>
-      <button type="button" class="filter-btn js-filter-btn" data-filter="flyuger">Флюгеры</button>
-      <button type="button" class="filter-btn js-filter-btn" data-filter="vertushka">Вертушки</button>
-      <button type="button" class="filter-btn js-filter-btn" data-filter="large">Большие</button>
-      <button type="button" class="filter-btn js-filter-btn" data-filter="small">Маленькие</button>
       <button type="button" class="filter-btn js-filter-btn" data-filter="popular">Популярные</button>
     </div>
     <label>
       <span class="visually-hidden">Сортировка</span>
       <select class="sort-select js-sort-select" aria-label="Сортировка товаров">
-        <option value="popularity">По популярности</option>
+        <option value="date-desc">По дате добавления: сначала новые</option>
+        <option value="date-asc">По дате добавления: сначала старые</option>
         <option value="price-asc">По цене: сначала дешевле</option>
         <option value="price-desc">По цене: сначала дороже</option>
-        <option value="name">По названию</option>
       </select>
     </label>
   </div>
@@ -85,8 +80,7 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <img src="images/logo/logo.svg" alt="" width="36" height="36">
-          <span class="footer-brand__name" data-contact="site-name">Деревянные флюгеры</span>
+          <img src="images/logo/logo.webp" alt="Flugerok" width="167" height="38" class="footer-brand__logo">
         </div>
         <p>Деревянные флюгеры ручной работы для дома, сада и дачи.</p>
       </div>

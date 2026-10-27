@@ -1,0 +1,35 @@
+<svg width="900" height="700" viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Флюгер на момент изготовления, фото 1">
+  <defs>
+    <radialGradient id="bgPp1" cx="50%" cy="40%" r="70%">
+      <stop offset="0" stop-color="#FBF8F2"/>
+      <stop offset="1" stop-color="#E9DCC0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="700" fill="url(#bgPp1)"/>
+  <rect x="40" y="40" width="820" height="620" fill="none" stroke="#C99A6A" stroke-width="2" stroke-dasharray="6 8" opacity="0.6"/>
+
+  <!-- верстак -->
+  <rect x="120" y="480" width="660" height="24" fill="#8C5A34"/>
+  <rect x="150" y="504" width="20" height="120" fill="#6B4426"/>
+  <rect x="730" y="504" width="20" height="120" fill="#6B4426"/>
+
+  <!-- флюгер-заготовка на верстаке -->
+  <line x1="450" y1="480" x2="450" y2="220" stroke="#3E2A1D" stroke-width="8" stroke-linecap="round"/>
+  <g transform="translate(450 260) rotate(-8)">
+    <path d="M-130 -22 C -100 -46, -50 -42, -14 -18 C 6 -32, 26 -28, 36 -12
+             C 48 -26, 66 -28, 74 -12 C 62 0, 62 14, 74 16
+             C 60 26, 42 20, 30 4 C 14 18, -4 22, -18 12
+             C -56 30, -104 20, -130 -6 Z" fill="#9C6A40" stroke="#3E2A1D" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+
+  <!-- инструменты рядом -->
+  <g stroke="#3E2A1D" stroke-width="4" fill="none" stroke-linecap="round">
+    <line x1="200" y1="560" x2="260" y2="500"/>
+    <line x1="200" y1="500" x2="260" y2="560"/>
+  </g>
+  <rect x="620" y="540" width="90" height="14" rx="4" fill="#5B4230"/>
+
+  <!-- подпись-плашка -->
+  <rect x="40" y="600" width="300" height="46" rx="6" fill="rgba(59,42,29,0.85)"/>
+  <text x="60" y="629" font-family="Georgia, serif" font-size="18" fill="#FBF8F2">Фото на момент изготовления</text>
+</svg>

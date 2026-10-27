@@ -7,9 +7,9 @@
 <meta name="description" content="Деревянные флюгеры и вертушки ручной работы для дачи, сада и частного дома. Натуральное дерево, авторские модели, доставка по Беларуси.">
 <meta property="og:title" content="Деревянные флюгеры ручной работы">
 <meta property="og:description" content="Украшение для дома, сада и дачи, которое оживает с каждым порывом ветра.">
-<meta property="og:image" content="images/hero/hero-wide1.webp">
+<meta property="og:image" content="images/hero/hero-wide.svg">
 <meta property="og:type" content="website">
-<link rel="icon" href="images/logo/logo.svg" type="image/svg+xml">
+<link rel="icon" href="images/logo/logo.webp" type="image/webp">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -18,8 +18,7 @@
 <header class="site-header">
   <div class="site-header__inner">
     <a class="brand" href="index.html">
-      <img src="images/logo/logo.svg" alt="" width="40" height="40">
-      <span class="brand__name" data-contact="site-name">Деревянные флюгеры</span>
+      <img src="images/logo/logo.webp" alt="Flugerok" width="229" height="52" class="brand__logo">
     </a>
     <nav class="nav js-nav" aria-label="Основная навигация">
       <a href="index.html" aria-current="page">Главная</a>
@@ -41,7 +40,7 @@
 
   <!-- Первый экран -->
   <section class="hero">
-    <img class="hero__bg" src="images/hero/hero-wide1.webp" alt="Загородный дом на закате с деревянным флюгером-петухом на крыше" width="1920" height="1080">
+    <img class="hero__bg" src="images/hero/hero-wide.svg" alt="Загородный дом на закате с деревянным флюгером-петухом на крыше" width="1920" height="1080">
     <div class="hero__scrim" aria-hidden="true"></div>
     <div class="container hero__inner">
       <div class="hero__copy">
@@ -54,6 +53,26 @@
           <a class="btn btn--ghost" href="#how-it-works">Как это работает</a>
         </div>
         <p class="hero__note">Работаем по всей Беларуси. Собираем и балансируем каждый флюгер вручную, чтобы он легко вращался на ветру.</p>
+
+        <!-- Информер погоды и ветра. Город по умолчанию — в js/config.js (weatherCity).
+             Скрыт до тех пор, пока js/weather.js не подгрузит данные. -->
+        <div class="weather-chip js-weather-chip" hidden>
+          <svg class="weather-chip__icon js-weather-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6"/>
+            <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(90 12 12)"/>
+            <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(180 12 12)"/>
+            <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(270 12 12)"/>
+            <circle cx="12" cy="12" r="1.9"/>
+          </svg>
+          <span class="weather-chip__text js-weather-text"></span>
+          <button type="button" class="weather-chip__locate js-weather-locate" title="Показать погоду в моём городе" aria-label="Показать погоду в моём городе">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="7"/>
+              <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -63,20 +82,21 @@
   <section class="stats">
     <div class="container stats__grid">
       <div class="stats__item">
-        <div class="stats__number">500+</div>
+        <div class="stats__number">~20</div>
         <div class="stats__label">флюгеров изготовлено вручную</div>
       </div>
       <div class="stats__item">
-        <div class="stats__number">6 лет</div>
-        <div class="stats__label">работаем и развиваем модели</div>
+        <div class="stats__number">2 года</div>
+        <div class="stats__label">занимаемся этим ремеслом</div>
       </div>
       <div class="stats__item">
-        <div class="stats__number">30+</div>
-        <div class="stats__label">моделей и вариаций фигур</div>
+        <!-- Число моделей считается автоматически по js/products.js; цифра в тексте — запасная, если JS выключен -->
+        <div class="stats__number js-models-count">6</div>
+        <div class="stats__label">моделей в каталоге</div>
       </div>
       <div class="stats__item">
-        <div class="stats__number">5–7 дней</div>
-        <div class="stats__label">в среднем на изготовление</div>
+        <div class="stats__number">20–30 дней</div>
+        <div class="stats__label">в среднем на изготовление одного флюгера</div>
       </div>
     </div>
   </section>
@@ -157,6 +177,17 @@
     </div>
   </section>
 
+  <!-- Новости орнитологии: данные в data/news.js, рендер в js/news.js -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section__head">
+        <h2>Новости орнитологии</h2>
+        <p>Что пишут о наблюдении за птицами и миграционных исследованиях в мире — коротко и со ссылкой на источник.</p>
+      </div>
+      <div class="news-grid js-news-grid"></div>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section class="section">
     <div class="container">
@@ -224,8 +255,7 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <img src="images/logo/logo.svg" alt="" width="36" height="36">
-          <span class="footer-brand__name" data-contact="site-name">Деревянные флюгеры</span>
+          <img src="images/logo/logo.webp" alt="Flugerok" width="167" height="38" class="footer-brand__logo">
         </div>
         <p>Деревянные флюгеры ручной работы для дома, сада и дачи.</p>
       </div>
@@ -309,6 +339,9 @@
 
 <script src="js/config.js"></script>
 <script src="js/products.js"></script>
+<script src="data/news.js"></script>
 <script src="js/main.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/news.js"></script>
 </body>
 </html>
