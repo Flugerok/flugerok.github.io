@@ -25,6 +25,8 @@
   --radius-sm: 8px;
   --shadow-card: 0 1px 0 var(--line);
   --container: 1180px;
+  --hero-base: #14110D; /* подложка первого экрана (видна на планшете/телефоне под фото) */
+  --hero-scrim: 0.78;   /* сила затемнения слева на фото: 0.78 — как на референсе, 0 — без затемнения */
 }
 
 * { box-sizing: border-box; }
@@ -93,7 +95,13 @@ table { border-collapse: collapse; width: 100%; }
 }
 
 .section {
-  padding: 64px 0;
+  padding: 56px 0;
+}
+/* Два подряд идущих блока на главной с одним и тем же фоном не должны
+   складывать отступы (иначе между ними получается огромная пустота) */
+main > .section--alt + .section--alt,
+main > .section:not(.section--alt) + .section:not(.section--alt) {
+  padding-top: 0;
 }
 .section--tight { padding: 40px 0; }
 .section--alt { background: var(--paper); }
@@ -196,7 +204,7 @@ table { border-collapse: collapse; width: 100%; }
   color: var(--wood-dark);
 }
 .brand img {
-  height: 52px;
+  height: 47px;
   width: auto;
   object-fit: contain;
 }
@@ -268,13 +276,20 @@ table { border-collapse: collapse; width: 100%; }
 .breadcrumbs [aria-current] { color: var(--wood-dark); font-weight: 700; }
 
 /* ---------- Hero (полноэкранный, фон — лёгкий SVG, а не тяжёлое фото) ---------- */
+/* Первый экран — как на референсе: фото на весь экран, текст слева поверх
+   него, выровнен по левому краю логотипа. Затемнение слева плавно сходит
+   на нет к двум третям ширины; его силу задаёт переменная --hero-scrim в
+   :root (0.78 — как на референсе, меньше — светлее, 0 — совсем без
+   затемнения). На экранах уже 1280 px (планшет, телефон) фото стоит сверху
+   целиком, а текст — под ним (см. responsive.css). */
 .hero {
   position: relative;
-  min-height: min(92vh, 900px);
+  min-height: min(96vh, 960px);
   display: flex;
   align-items: flex-end;
   overflow: hidden;
   color: var(--white);
+  background: var(--hero-base);
 }
 .hero__bg {
   position: absolute;
@@ -282,7 +297,9 @@ table { border-collapse: collapse; width: 100%; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 62% 50%;
+  /* 20% по вертикали: кадр чуть подвинут вверх, поэтому лишнее обрезается
+     в основном снизу (там столб), а верхняя лопасть флюгера остаётся в кадре */
+  object-position: 50% 20%;
   z-index: 0;
 }
 .hero__scrim {
@@ -290,14 +307,27 @@ table { border-collapse: collapse; width: 100%; }
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(20,14,10,0.78) 0%, rgba(20,14,10,0.5) 38%, rgba(20,14,10,0.05) 70%),
-    linear-gradient(0deg, rgba(20,14,10,0.55) 0%, rgba(20,14,10,0.05) 45%);
+    linear-gradient(90deg,
+      rgba(20,14,10,var(--hero-scrim)) 0%,
+      rgba(20,14,10,calc(var(--hero-scrim) * 0.64)) 38%,
+      rgba(20,14,10,calc(var(--hero-scrim) * 0.064)) 70%),
+    linear-gradient(0deg,
+      rgba(20,14,10,calc(var(--hero-scrim) * 0.7)) 0%,
+      rgba(20,14,10,calc(var(--hero-scrim) * 0.064)) 45%);
 }
 .hero__inner {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 72px 0 76px;
+  max-width: none;
+  margin: 0;
+  padding-top: 72px;
+  padding-bottom: 76px;
+  padding-right: 24px;
+  /* Блок текста сдвинут влево от левого края логотипа (примерно на 76 px),
+     а на более узких экранах ещё и ограничен так, чтобы заголовок не
+     заходил на голову флюгера (она начинается примерно с 46% ширины). */
+  padding-left: max(24px, min(calc((100vw - 1180px) / 2 - 76px), calc(45.8vw - 580px)));
 }
 .hero__copy { max-width: 620px; }
 .hero__eyebrow {
@@ -356,17 +386,6 @@ table { border-collapse: collapse; width: 100%; }
   flex-shrink: 0;
   opacity: 0.9;
   transform-origin: 50% 50%;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .weather-chip__icon {
-    /* Длительность оборота задаёт js/weather.js по реальной скорости
-       ветра: слабый ветер — медленное вращение, сильный — быстрое. */
-    animation: weather-chip-spin var(--spin-duration, 4s) linear infinite;
-  }
-}
-@keyframes weather-chip-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 .weather-chip__text { white-space: nowrap; }
 .weather-chip__locate {
@@ -630,25 +649,57 @@ table { border-collapse: collapse; width: 100%; }
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 36px;
   padding-bottom: 32px;
   border-bottom: 1px solid rgba(239, 227, 204, 0.18);
 }
-.footer-brand { display: flex; align-items: center; margin-bottom: 12px; }
+.footer-brand { display: inline-flex; align-items: center; margin-bottom: 14px; }
 .footer-brand img {
-  height: 38px;
+  height: 34px;
   width: auto;
   object-fit: contain;
   background: var(--paper);
   padding: 8px 14px;
   border-radius: var(--radius-sm);
 }
+.footer-about { margin: 0; max-width: 38ch; font-size: 0.92rem; }
 .site-footer p { color: #D8C6A8; }
 .site-footer h4 { color: var(--white); font-family: var(--font-body); font-size: 0.95rem; margin-bottom: 14px; }
 .site-footer ul { display: flex; flex-direction: column; gap: 10px; }
 .site-footer a { color: #EFE3CC; }
 .site-footer a:hover { color: var(--white); }
+.footer-feedback {
+  margin-top: 18px;
+  color: #EFE3CC;
+  border-color: rgba(239, 227, 204, 0.45);
+}
+.footer-feedback:hover {
+  color: var(--white);
+  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.06);
+}
+.footer-legal {
+  margin-top: 28px;
+  padding: 18px 20px;
+  border: 1px solid rgba(239, 227, 204, 0.18);
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.14);
+}
+.footer-legal p { margin: 0; font-size: 0.84rem; line-height: 1.65; color: #C9B99B; }
+.footer-link-btn {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #EFE3CC;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.footer-link-btn:hover { color: var(--white); }
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -658,7 +709,6 @@ table { border-collapse: collapse; width: 100%; }
   font-size: 0.85rem;
   color: #B7A688;
 }
-.footer-note { font-size: 0.82rem; color: #A0906F; max-width: 60ch; margin-top: 14px; }
 
 /* ---------- Модальное окно заказа ---------- */
 .order-modal {

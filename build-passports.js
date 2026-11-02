@@ -148,7 +148,12 @@ function buildPassportPage(entry) {
 <meta property="og:description" content="${escAttr(description)}">
 <meta property="og:image" content="${UP}${esc((entry.photos || [])[0] || "images/logo/logo.svg")}">
 <meta property="og:type" content="article">
-<link rel="icon" href="${UP}images/logo/logo.webp" type="image/webp">
+<link rel="icon" type="image/x-icon" href="${UP}favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="${UP}images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="${UP}images/favicon/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="${UP}images/favicon/apple-touch-icon.png">
+<link rel="manifest" href="${UP}images/favicon/site.webmanifest">
+<meta name="theme-color" content="#F6F1E7">
 <link rel="stylesheet" href="${UP}css/style.css">
 <link rel="stylesheet" href="${UP}css/responsive.css">
 </head>
@@ -157,7 +162,7 @@ function buildPassportPage(entry) {
 <header class="site-header">
   <div class="site-header__inner">
     <a class="brand" href="${UP}index.html">
-      <img src="${UP}images/logo/logo.webp" alt="Flugerok" width="229" height="52" class="brand__logo">
+      <img src="${UP}images/logo/logo.webp" alt="Flugerok" width="206" height="47" class="brand__logo">
     </a>
     <nav class="nav js-nav" aria-label="Основная навигация">
       <a href="${UP}index.html">Главная</a>
@@ -203,36 +208,39 @@ ${ctaHtml}
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-      <div>
-        <div class="footer-brand">
-          <img src="${UP}images/logo/logo.webp" alt="Flugerok" width="167" height="38" class="footer-brand__logo">
-        </div>
-        <p>Деревянные флюгеры ручной работы для дома, сада и дачи.</p>
+      <div class="footer-col footer-col--brand">
+        <a class="footer-brand" href="${UP}index.html">
+          <img src="${UP}images/logo/logo.webp" alt="flugerOK" width="150" height="34" class="footer-brand__logo">
+        </a>
+        <p class="footer-about">Деревянные флюгеры ручной работы для дома, сада и дачи. Каждое изделие делаем вручную — в среднем 20–30 дней.</p>
       </div>
-      <div>
-        <h4>Меню</h4>
+      <div class="footer-col">
+        <h4>Разделы</h4>
         <ul>
           <li><a href="${UP}index.html">Главная</a></li>
           <li><a href="${UP}catalog.html">Каталог</a></li>
           <li><a href="${UP}about.html">О нас</a></li>
-          <li><a href="${UP}delivery.html">Доставка</a></li>
+          <li><a href="${UP}delivery.html">Доставка и оплата</a></li>
           <li><a href="${UP}contacts.html">Контакты</a></li>
         </ul>
       </div>
-      <div>
-        <h4>Контакты</h4>
+      <div class="footer-col">
+        <h4>Связаться</h4>
         <ul>
-          <li><a data-contact="phone-link" href="tel:">Телефон: <span data-contact="phone"></span></a></li>
+          <li><a data-contact="phone-link" href="tel:"><span data-contact="phone"></span></a></li>
           <li><a data-contact="telegram-link" href="#" target="_blank" rel="noopener">Telegram: <span data-contact="telegram-name"></span></a></li>
-          <li><a data-contact="email-link" href="#">Email: <span data-contact="email"></span></a></li>
+          <li><a data-contact="email-link" href="#"><span data-contact="email"></span></a></li>
         </ul>
+        <button type="button" class="btn btn--ghost btn--sm footer-feedback js-order-btn" data-mode="feedback" data-product="">Обратная связь</button>
       </div>
     </div>
+    <div class="footer-legal">
+      <p>Обращаем ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями ст. 405 Гражданского кодекса Республики Беларусь. Для получения подробной информации о наличии и стоимости указанных товаров и (или) услуг, пожалуйста, обращайтесь к менеджеру сайта с помощью специальной формы <button type="button" class="footer-link-btn js-order-btn" data-mode="feedback" data-product="">«Обратная связь»</button>.</p>
+    </div>
     <div class="footer-bottom">
-      <span>© <span class="js-year">2026</span> <span data-contact="site-name">Деревянные флюгеры</span></span>
+      <span>© <span class="js-year">2026</span> flugerOK</span>
       <span>Ручная работа из дерева</span>
     </div>
-    <p class="footer-note">Сайт носит информационный характер. Актуальную стоимость и наличие уточняйте перед заказом.</p>
   </div>
 </footer>
 

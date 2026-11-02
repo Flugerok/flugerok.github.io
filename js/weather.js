@@ -3,32 +3,33 @@
   ----------
   Небольшой информер с температурой и ветром — тематически в духе
   сайта (флюгер = ветер). Работает без backend: обращается напрямую
-  из браузера к бесплатным API без ключа (ключ негде было бы спрятать
-  на статическом сайте).
+  из браузера к бесплатным API без ключа.
 
   Источники данных:
   - Open-Meteo (https://open-meteo.com) — сама погода и ветер.
-  - BigDataCloud reverse-geocode-client — определение названия города
-    по координатам, нужно только при нажатии "Мой город".
-  Оба сервиса бесплатны, не требуют API-ключа и разрешают запросы
-  прямо из браузера (CORS).
+  - BigDataCloud reverse-geocode-client — название города по
+    координатам, нужно только при определении местоположения.
 
-  По умолчанию показывается город из js/config.js
-  (SITE_CONFIG.weatherCity/weatherLat/weatherLon — по умолчанию Минск).
-  Кнопка "Мой город" запрашивает геолокацию — ТОЛЬКО по клику
-  посетителя, браузер сам покажет системный запрос разрешения.
+  Какой город показывается:
+  1. Если посетитель когда-то нажимал "Мой город" — запоминается его
+     место (в localStorage браузера, только на его устройстве, на
+     сервер ничего не уходит; координаты округляются до ~1 км) и при
+     следующих заходах сразу показывается оно, а не Минск.
+  2. Если браузеру уже выдано разрешение на геопозицию для сайта —
+     место обновляется само, без повторных вопросов (если посетитель
+     переехал дальше чем на ~5 км, показания и город обновятся).
+  3. Иначе — город по умолчанию из js/config.js (weatherCity,
+     weatherLat, weatherLon; по умолчанию Минск). Запрос разрешения
+     у посетителя появляется ТОЛЬКО по клику на кнопку "Мой город".
 
-  Значок рядом с показаниями — маленький вентилятор (четыре лопасти):
-  он крутится непрерывно, а скорость вращения зависит от реальной
-  скорости ветра по данным Open-Meteo — слабый ветер крутит его
-  медленно, сильный — заметно быстрее. Направление ветра показывается
-  рядом текстом (например "СЗ"), отдельно от иконки. Для посетителей,
-  которым анимации мешают (настройка "уменьшить движение" в ОС),
-  вращение отключается само — вентилятор остаётся неподвижным.
+  Вентилятор-значок: крутится непрерывно, а скорость вращения
+  пропорциональна реальной скорости ветра (слабый — медленно, сильный
+  — быстро). Вращение считается здесь, в скрипте, и плавно меняется
+  при смене показаний. Для посетителей с настройкой "уменьшить
+  движение" в ОС вентилятор не вращается.
 
-  Если что-то не загрузилось (нет сети, посетитель отказал в
-  геолокации и т.п.) — информер просто остаётся скрытым, без ошибок
-  на экране.
+  Если что-то не загрузилось (нет сети и т.п.) — информер просто
+  остаётся скрытым, без ошибок на экране.
 */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -40,35 +41,79 @@ document.addEventListener("DOMContentLoaded", () => {
   const locateBtn = chip.querySelector(".js-weather-locate");
   if (!textEl) return;
 
-  const defaultCity = SITE_CONFIG.weatherCity || "Минск";
-  const defaultLat = SITE_CONFIG.weatherLat != null ? SITE_CONFIG.weatherLat : 53.9006;
-  const defaultLon = SITE_CONFIG.weatherLon != null ? SITE_CONFIG.weatherLon : 27.5590;
+  const STORAGE_KEY = "flugerok_weather_place";
+  const SAME_PLACE_KM = 5;
 
-  loadWeather(defaultLat, defaultLon, defaultCity);
+  const defaultPlace = {
+    city: SITE_CONFIG.weatherCity || "Минск",
+    lat: SITE_CONFIG.weatherLat != null ? SITE_CONFIG.weatherLat : 53.9006,
+    lon: SITE_CONFIG.weatherLon != null ? SITE_CONFIG.weatherLon : 27.5590,
+  };
 
-  if (locateBtn) {
-    locateBtn.addEventListener("click", () => {
-      if (!navigator.geolocation) return;
-      locateBtn.disabled = true;
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          const { latitude, longitude } = pos.coords;
-          const city = await reverseGeocode(latitude, longitude);
-          await loadWeather(latitude, longitude, city || "Ваш город");
-          locateBtn.disabled = false;
-        },
-        () => {
-          locateBtn.disabled = false; // посетитель отказал в доступе — просто ничего не меняем
-        },
-        { timeout: 8000 }
-      );
-    });
+  /* ---------- Вращение вентилятора по скорости ветра ---------- */
+  const reduceMotion =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let angle = 0;
+  let degPerSec = 0;
+  let lastTs = null;
+  let rafId = null;
+
+  // Скорость ветра (м/с) -> градусов в секунду. Линейная зависимость:
+  // 1 м/с ~ 40°/с (оборот за 9 с), 3 м/с ~ 3 с, 10 м/с ~ 0,9 с,
+  // 20 м/с ~ 0,45 с. Нижняя граница — чтобы в штиль вентилятор едва
+  // заметно двигался, верхняя — чтобы не превращался в мельтешение.
+  function degPerSecFromWind(speedMs) {
+    return Math.min(900, Math.max(12, speedMs * 40));
   }
 
-  async function loadWeather(lat, lon, cityLabel) {
+  function spinTick(ts) {
+    if (lastTs !== null) {
+      const dt = Math.min((ts - lastTs) / 1000, 0.1); // защита от скачка после паузы вкладки
+      angle = (angle + degPerSec * dt) % 360;
+      iconEl.style.transform = `rotate(${angle.toFixed(1)}deg)`;
+    }
+    lastTs = ts;
+    rafId = requestAnimationFrame(spinTick);
+  }
+
+  function setWindSpeed(speedMs) {
+    degPerSec = degPerSecFromWind(speedMs);
+    if (iconEl && !reduceMotion && rafId === null) {
+      rafId = requestAnimationFrame(spinTick);
+    }
+  }
+
+  /* ---------- Хранение выбранного места ---------- */
+  function readSavedPlace() {
+    try {
+      const v = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (v && isFinite(v.lat) && isFinite(v.lon) && v.city) return v;
+    } catch (e) {}
+    return null;
+  }
+
+  function savePlace(place) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(place));
+    } catch (e) {}
+  }
+
+  function distanceKm(a, b) {
+    const R = 6371;
+    const rad = (d) => (d * Math.PI) / 180;
+    const dLat = rad(b.lat - a.lat);
+    const dLon = rad(b.lon - a.lon);
+    const h =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+
+  /* ---------- Погода ---------- */
+  async function showWeather(place) {
     try {
       const url =
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+        `https://api.open-meteo.com/v1/forecast?latitude=${place.lat}&longitude=${place.lon}` +
         `&current=temperature_2m,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=auto`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("weather request failed");
@@ -81,8 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const dir = compassDirection(c.wind_direction_10m);
       const sign = temp > 0 ? "+" : "";
 
-      textEl.textContent = `${cityLabel}: ${sign}${temp}°C, ветер ${wind} м/с ${dir}`;
-      if (iconEl) iconEl.style.setProperty("--spin-duration", `${spinDurationFromWind(c.wind_speed_10m)}s`);
+      textEl.textContent = `${place.city}: ${sign}${temp}°C, ветер ${wind} м/с ${dir}`;
+      chip.title = `Ветер ${wind} м/с — чем он сильнее, тем быстрее крутится вентилятор`;
+      setWindSpeed(c.wind_speed_10m);
       chip.hidden = false;
     } catch (e) {
       // тихо ничего не показываем — сайт не должен выглядеть сломанным
@@ -107,12 +153,84 @@ document.addEventListener("DOMContentLoaded", () => {
     return dirs[idx];
   }
 
-  // Скорость ветра (м/с) -> длительность одного оборота вентилятора (сек).
-  // Чем сильнее ветер, тем короче оборот (быстрее крутится).
-  // Сверху и снизу ограничиваем, чтобы вентилятор не "замирал" в штиль
-  // и не мельтешил без остановки в сильный ветер.
-  function spinDurationFromWind(speedMs) {
-    const raw = 14 / (speedMs + 1.2);
-    return Math.round(Math.min(7, Math.max(0.9, raw)) * 10) / 10;
+  /* ---------- Определение местоположения ---------- */
+  // Возвращает Promise с { lat, lon } или reject с ошибкой геолокации
+  function getPosition() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) return reject(new Error("no geolocation"));
+      navigator.geolocation.getCurrentPosition(
+        (pos) =>
+          resolve({
+            lat: Math.round(pos.coords.latitude * 100) / 100,
+            lon: Math.round(pos.coords.longitude * 100) / 100,
+          }),
+        (err) => reject(err),
+        { timeout: 8000, maximumAge: 10 * 60 * 1000 }
+      );
+    });
+  }
+
+  // Определяет место, сохраняет его и показывает погоду.
+  // Если место почти не изменилось по сравнению с сохранённым — берём
+  // сохранённое название города, чтобы не делать лишний запрос.
+  async function detectAndShow(savedPlace) {
+    const pos = await getPosition();
+    if (savedPlace && distanceKm(savedPlace, pos) < SAME_PLACE_KM) return savedPlace;
+    const city = (await reverseGeocode(pos.lat, pos.lon)) || "Ваш город";
+    const place = { city, lat: pos.lat, lon: pos.lon };
+    savePlace(place);
+    await showWeather(place);
+    return place;
+  }
+
+  async function geolocationState() {
+    try {
+      if (navigator.permissions && navigator.permissions.query) {
+        const st = await navigator.permissions.query({ name: "geolocation" });
+        return st.state; // "granted" | "prompt" | "denied"
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  /* ---------- Запуск ---------- */
+  (async function init() {
+    const saved = readSavedPlace();
+    const state = await geolocationState();
+
+    if (saved) {
+      await showWeather(saved);
+      if (state === "granted") {
+        // разрешение уже выдано — тихо проверяем, не сменилось ли место
+        detectAndShow(saved).catch(() => {});
+      }
+      return;
+    }
+
+    if (state === "granted") {
+      try {
+        await detectAndShow(null);
+        return;
+      } catch (e) {
+        // не получилось определить — показываем город по умолчанию
+      }
+    }
+    await showWeather(defaultPlace);
+  })();
+
+  if (locateBtn) {
+    locateBtn.addEventListener("click", async () => {
+      locateBtn.disabled = true;
+      try {
+        await detectAndShow(null);
+        locateBtn.title = "Показать погоду в моём городе";
+      } catch (err) {
+        if (err && err.code === 1) {
+          locateBtn.title = "Доступ к геопозиции запрещён — разрешите его для сайта в настройках браузера";
+        }
+      } finally {
+        locateBtn.disabled = false;
+      }
+    });
   }
 });

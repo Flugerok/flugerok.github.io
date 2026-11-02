@@ -3,11 +3,28 @@
    Правила переопределяют style.css на меньших экранах.
    ========================================================================== */
 
+/* ---------- Первый экран: до 1279px — фото сверху целиком, текст под ним ---------- */
+@media (max-width: 1279px) {
+  .hero { display: block; min-height: 0; }
+  .hero__bg {
+    position: relative;
+    inset: auto;
+    display: block;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    /* лёгкий переход низа фото в тёмную подложку */
+    -webkit-mask-image: linear-gradient(180deg, #000 88%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 88%, transparent 100%);
+  }
+  .hero__scrim { display: none; }
+  .hero__inner { padding: 8px 24px 44px; }
+  .hero__copy { max-width: 620px; }
+  .hero__title { font-size: clamp(1.8rem, 5vw, 2.4rem); }
+}
+
 /* ---------- Планшет: до 1024px ---------- */
 @media (max-width: 1024px) {
-  .hero { min-height: min(78vh, 680px); align-items: flex-end; }
-  .hero__bg { object-position: 68% 50%; }
-  .hero__text { max-width: none; }
 
   .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
 
@@ -17,6 +34,7 @@
   .news-grid { grid-template-columns: repeat(2, 1fr); }
 
   .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-col--brand { grid-column: 1 / -1; }
 
   .product-layout { grid-template-columns: 1fr; gap: 32px; }
 
@@ -63,11 +81,9 @@
   .section { padding: 44px 0; }
 
   .site-header__inner { padding: 12px 18px; }
-  .brand img { height: 38px; }
+  .brand img { height: 34px; }
 
-  .hero { padding: 0; min-height: min(72vh, 560px); }
-  .hero__inner { padding: 36px 0 40px; }
-  .hero__bg { object-position: 74% 50%; }
+  .hero__inner { padding: 6px 18px 36px; }
   .hero__actions { flex-direction: column; align-items: stretch; }
   .hero__actions .btn { width: 100%; }
   .weather-chip { font-size: 0.78rem; padding: 6px 6px 6px 10px; }

@@ -7,9 +7,14 @@
 <meta name="description" content="Деревянные флюгеры и вертушки ручной работы для дачи, сада и частного дома. Натуральное дерево, авторские модели, доставка по Беларуси.">
 <meta property="og:title" content="Деревянные флюгеры ручной работы">
 <meta property="og:description" content="Украшение для дома, сада и дачи, которое оживает с каждым порывом ветра.">
-<meta property="og:image" content="images/hero/hero-wide.svg">
+<meta property="og:image" content="https://flugerok.github.io/images/hero/og-cover.jpg">
 <meta property="og:type" content="website">
-<link rel="icon" href="images/logo/logo.webp" type="image/webp">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+<link rel="manifest" href="images/favicon/site.webmanifest">
+<meta name="theme-color" content="#F6F1E7">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -18,7 +23,7 @@
 <header class="site-header">
   <div class="site-header__inner">
     <a class="brand" href="index.html">
-      <img src="images/logo/logo.webp" alt="Flugerok" width="229" height="52" class="brand__logo">
+      <img src="images/logo/logo.webp" alt="Flugerok" width="206" height="47" class="brand__logo">
     </a>
     <nav class="nav js-nav" aria-label="Основная навигация">
       <a href="index.html" aria-current="page">Главная</a>
@@ -40,7 +45,7 @@
 
   <!-- Первый экран -->
   <section class="hero">
-    <img class="hero__bg" src="images/hero/hero-wide.svg" alt="Загородный дом на закате с деревянным флюгером-петухом на крыше" width="1920" height="1080">
+    <img class="hero__bg" src="images/hero/hero-1672.webp" srcset="images/hero/hero-1200.webp 1200w, images/hero/hero-1672.webp 1672w" sizes="100vw" alt="Деревянный флюгер в виде синицы в летнем саду на берегу озера" width="1672" height="941" fetchpriority="high">
     <div class="hero__scrim" aria-hidden="true"></div>
     <div class="container hero__inner">
       <div class="hero__copy">
@@ -57,25 +62,26 @@
         <!-- Информер погоды и ветра. Город по умолчанию — в js/config.js (weatherCity).
              Скрыт до тех пор, пока js/weather.js не подгрузит данные. -->
         <div class="weather-chip js-weather-chip" hidden>
-          <svg class="weather-chip__icon js-weather-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6"/>
-            <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(90 12 12)"/>
-            <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(180 12 12)"/>
-            <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(270 12 12)"/>
-            <circle cx="12" cy="12" r="1.9"/>
-          </svg>
-          <span class="weather-chip__text js-weather-text"></span>
-          <button type="button" class="weather-chip__locate js-weather-locate" title="Показать погоду в моём городе" aria-label="Показать погоду в моём городе">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="7"/>
-              <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>
-              <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
-            </svg>
-          </button>
-        </div>
+      <svg class="weather-chip__icon js-weather-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6"/>
+        <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(90 12 12)"/>
+        <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(180 12 12)"/>
+        <ellipse cx="12" cy="6.3" rx="2.1" ry="4.6" transform="rotate(270 12 12)"/>
+        <circle cx="12" cy="12" r="1.9"/>
+      </svg>
+      <span class="weather-chip__text js-weather-text"></span>
+      <button type="button" class="weather-chip__locate js-weather-locate" title="Показать погоду в моём городе" aria-label="Показать погоду в моём городе">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="7"/>
+          <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+        </svg>
+      </button>
+    </div>
       </div>
     </div>
   </section>
+
 
   <!-- Статичный блок с цифрами. Не анимированный счётчик — просто числа.
        Здесь меняются цифры счётчика: отредактируйте .stats__number и .stats__label ниже. -->
@@ -178,7 +184,7 @@
   </section>
 
   <!-- Новости орнитологии: данные в data/news.js, рендер в js/news.js -->
-  <section class="section section--alt">
+  <section class="section">
     <div class="container">
       <div class="section__head">
         <h2>Новости орнитологии</h2>
@@ -253,36 +259,39 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-      <div>
-        <div class="footer-brand">
-          <img src="images/logo/logo.webp" alt="Flugerok" width="167" height="38" class="footer-brand__logo">
-        </div>
-        <p>Деревянные флюгеры ручной работы для дома, сада и дачи.</p>
+      <div class="footer-col footer-col--brand">
+        <a class="footer-brand" href="index.html">
+          <img src="images/logo/logo.webp" alt="flugerOK" width="150" height="34" class="footer-brand__logo">
+        </a>
+        <p class="footer-about">Деревянные флюгеры ручной работы для дома, сада и дачи. Каждое изделие делаем вручную — в среднем 20–30 дней.</p>
       </div>
-      <div>
-        <h4>Меню</h4>
+      <div class="footer-col">
+        <h4>Разделы</h4>
         <ul>
           <li><a href="index.html">Главная</a></li>
           <li><a href="catalog.html">Каталог</a></li>
           <li><a href="about.html">О нас</a></li>
-          <li><a href="delivery.html">Доставка</a></li>
+          <li><a href="delivery.html">Доставка и оплата</a></li>
           <li><a href="contacts.html">Контакты</a></li>
         </ul>
       </div>
-      <div>
-        <h4>Контакты</h4>
+      <div class="footer-col">
+        <h4>Связаться</h4>
         <ul>
-          <li><a data-contact="phone-link" href="tel:">Телефон: <span data-contact="phone"></span></a></li>
+          <li><a data-contact="phone-link" href="tel:"><span data-contact="phone"></span></a></li>
           <li><a data-contact="telegram-link" href="#" target="_blank" rel="noopener">Telegram: <span data-contact="telegram-name"></span></a></li>
-          <li><a data-contact="email-link" href="#">Email: <span data-contact="email"></span></a></li>
+          <li><a data-contact="email-link" href="#"><span data-contact="email"></span></a></li>
         </ul>
+        <button type="button" class="btn btn--ghost btn--sm footer-feedback js-order-btn" data-mode="feedback" data-product="">Обратная связь</button>
       </div>
     </div>
+    <div class="footer-legal">
+      <p>Обращаем ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями ст. 405 Гражданского кодекса Республики Беларусь. Для получения подробной информации о наличии и стоимости указанных товаров и (или) услуг, пожалуйста, обращайтесь к менеджеру сайта с помощью специальной формы <button type="button" class="footer-link-btn js-order-btn" data-mode="feedback" data-product="">«Обратная связь»</button>.</p>
+    </div>
     <div class="footer-bottom">
-      <span>© <span class="js-year">2026</span> <span data-contact="site-name">Деревянные флюгеры</span></span>
+      <span>© <span class="js-year">2026</span> flugerOK</span>
       <span>Ручная работа из дерева</span>
     </div>
-    <p class="footer-note">Сайт носит информационный характер. Актуальную стоимость и наличие уточняйте перед заказом.</p>
   </div>
 </footer>
 

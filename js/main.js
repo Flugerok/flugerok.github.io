@@ -141,7 +141,7 @@ function renderPopularProducts() {
 
   const popular = PRODUCTS.filter((p) => p.popular)
     .sort((a, b) => b.popularity - a.popularity)
-    .slice(0, 6);
+    .slice(0, 3);
 
   popular.forEach((product) => {
     container.appendChild(createProductCard(product));
@@ -160,7 +160,48 @@ function initOrderModal() {
   const successEl = modal.querySelector(".js-order-success");
   const fallbackEl = modal.querySelector(".js-order-fallback");
 
-  function openModal(productName) {
+  // Тексты формы по умолчанию (режим "Заказать") запоминаем один раз,
+  // чтобы режим "Обратная связь" мог временно их подменять и потом вернуть
+  const titleEl = modal.querySelector(".order-modal__title");
+  const subtitleEl = modal.querySelector(".order-modal__subtitle");
+  const qtyInput = modal.querySelector("[name='quantity']");
+  const qtyField = qtyInput ? qtyInput.closest(".field") : null;
+  const commentLabel = modal.querySelector("label[for='order-comment']");
+  const commentInput = modal.querySelector("[name='comment']");
+  const submitBtn = form ? form.querySelector("[type='submit']") : null;
+  const defaults = {
+    title: titleEl ? titleEl.textContent : "",
+    subtitle: subtitleEl ? subtitleEl.textContent : "",
+    commentLabel: commentLabel ? commentLabel.textContent : "",
+    commentPlaceholder: commentInput ? commentInput.placeholder : "",
+    submit: submitBtn ? submitBtn.textContent : "Отправить заказ",
+  };
+
+  // mode === "feedback": форма "Обратная связь" (вопрос о наличии и
+  // стоимости) — без поля "Количество"; иначе — обычная форма заказа.
+  function applyMode(mode) {
+    const feedback = mode === "feedback";
+    if (titleEl) titleEl.textContent = feedback ? "Обратная связь" : defaults.title;
+    if (subtitleEl) {
+      subtitleEl.textContent = feedback
+        ? "Спросите о наличии и стоимости — менеджер свяжется с вами."
+        : defaults.subtitle;
+    }
+    if (commentLabel) commentLabel.textContent = feedback ? "Ваш вопрос" : defaults.commentLabel;
+    if (commentInput) {
+      commentInput.placeholder = feedback
+        ? "Например: есть ли модель в наличии и сколько она стоит"
+        : defaults.commentPlaceholder;
+    }
+    if (qtyField) qtyField.hidden = feedback;
+    if (qtyInput) qtyInput.disabled = feedback; // отключённое поле не отправляется
+    if (submitBtn) {
+      submitBtn.textContent = feedback ? "Отправить" : defaults.submit;
+      submitBtn.dataset.label = submitBtn.textContent;
+    }
+  }
+
+  function openModal(productName, mode) {
     modal.classList.add("is-open");
     document.body.classList.add("no-scroll");
     if (form) {
@@ -169,8 +210,12 @@ function initOrderModal() {
     }
     if (successEl) successEl.hidden = true;
     if (fallbackEl) fallbackEl.hidden = true;
+    applyMode(mode);
     if (productField) {
-      productField.value = productName || "Без указания модели";
+      productField.value =
+        mode === "feedback"
+          ? "Обратная связь (вопрос о наличии и стоимости)"
+          : productName || "Без указания модели";
     }
     const nameInput = modal.querySelector("[name='name']");
     if (nameInput) nameInput.focus();
@@ -185,7 +230,7 @@ function initOrderModal() {
   document.addEventListener("click", (event) => {
     const btn = event.target.closest(".js-order-btn");
     if (!btn) return;
-    openModal(btn.dataset.product || "");
+    openModal(btn.dataset.product || "", btn.dataset.mode || "");
   });
 
   if (closeBtn) closeBtn.addEventListener("click", closeModal);
@@ -257,7 +302,7 @@ function submitOrder(form, elements) {
     .finally(() => {
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.textContent = "Отправить заказ";
+        submitBtn.textContent = submitBtn.dataset.label || "Отправить заказ";
       }
     });
 }
